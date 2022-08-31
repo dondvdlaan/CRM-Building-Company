@@ -41,11 +41,13 @@ public class Customer {
         this.custRegistrationDate = custRegistrationDate;
     }
 
-    public Customer(String custFirstName, String custLastName) {
+    public Customer(String custFirstName, String custLastName, String custEmail) {
         this.custFirstName = custFirstName;
         this.custLastName = custLastName;
+        this.custEmail = custEmail;
     }
 
+    // region 2 Getters and Setters
     public Integer getCustID() {
         return custID;
     }

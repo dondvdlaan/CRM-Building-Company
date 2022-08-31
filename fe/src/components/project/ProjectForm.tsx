@@ -36,7 +36,7 @@ export default function CustomerForm(props:Props) {
   const [custZipCode, setCustZipCode] = useState(props.custZipCode);
   const [custCity, setCustCity] = useState(props.custCity);
   const [custCountry, setCustCountry] = useState(props.custCountry);
-  // Not used as input field, but to complete Customer object to be sent to DB
+  // Not used as input field, but to complete Customer object ti be sent to DB
   const [custRegistrationDate, setCustRegistrationDate] = useState(props.custRegistrationDate);
 
   // Error states
@@ -79,15 +79,12 @@ export default function CustomerForm(props:Props) {
  */
 const isEmailValid = (email:string): boolean =>{
 
-// Check if email according Regex or empty string
-  return (( email.match(emailRegex) || email.match(/^$/)) === null)? false:true
+// Check if email input is according Regex or is not entered(empty string)
+  return ((email.match(emailRegex) || email.match(/^$/)) === null)? false:true
 } 
 
 /**
- * Check form user inputs before dispatch. If inputs are incorrect, error message
- * is sent.
- * 
- * @returm ; boolean - True, when form inputs are correct
+ * Check form user inputs before dispatch
  */
 const checkFormInputs = (): boolean =>{
   // Variable

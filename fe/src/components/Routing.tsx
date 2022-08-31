@@ -7,6 +7,7 @@ import { ListProjects } from "./project/ListProjects";
 import  {ListReferences}  from "./references/ListReferences";
 import { Summary } from "./Summary";
 import { ProjectDetails } from "./project/ProjectDetails";
+import { AddProject } from "./project/AddProject";
 
 export default function Routing(): ReactElement {
   return (
@@ -15,8 +16,11 @@ export default function Routing(): ReactElement {
       <Route path="/allCustomers"       element={<ListCustomers />} />
       <Route path="/addCustomer"        element={<AddCustomer />} />
       <Route path="/editCustomer/:id"   element={<EditCustomer />} />
+
       <Route path="/allProjects"        element={<ListProjects />} />
-      <Route path="/projectDetails/:id"  element={<ProjectDetails />} />
+      <Route path="/projectDetails/:id" element={<ProjectDetails />} />
+      <Route path="/addProject"         element={<AddProject />} />
+
       <Route path="/allReferences"      element={<ListReferences />} />
 
       <Route path="/" element={<Navigate to="/summary" />} />

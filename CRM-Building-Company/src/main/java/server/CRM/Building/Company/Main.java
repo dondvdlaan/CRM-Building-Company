@@ -23,7 +23,7 @@ public class Main {
 		return (args) -> {
 			//save a few projects
 			Project project =new Project("TestProject", "TestDetails");
-			Customer customer = (new Customer("TestName","TestLastNmae"));
+			Customer customer = (new Customer("TestName","TestLastNmae","a@bbb.ccc"));
 
 			project.setCustomer(customer);
 
