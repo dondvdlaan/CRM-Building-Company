@@ -12,7 +12,7 @@ import {
   ThemeProvider
 } from '@mui/material/styles';
 import { Customer, CustomerWORegDate } from '../../types/Customer';
-import { dbApi } from '../../shared/DBApi';
+import { simplifiedDBApi } from '../../shared/DBApi';
 import { Method } from "axios";
 
 interface Props extends Customer{
@@ -44,8 +44,9 @@ export default function CustomerForm(props:Props) {
   const [errorLastName, setErrorLastName]   = useState(false);
 
   // Error messages
-  const errMessageName  = "Please fill in your name";
-  const errMessageEmail = "Incorrect email, format is a@bcd.efg";
+  const errMessageName    = "Please fill in your name";
+  const errMessageEmail   = "Incorrect email, format is a@bcd.efg";
+
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -111,7 +112,12 @@ const checkFormInputs = (): boolean =>{
       ["PUT", `customer/${props.custID}`]:
       ["POST", "customer"];
   
-      dbApi(method, path, ()=>navigate("/allCustomers"), customer())
+      simplifiedDBApi(method, path, customer())
+      // Callback
+      .then(()=>navigate("/allCustomers"))
+      .catch((error: any) => {
+          console.log(error.message)
+        })
     }
   }
 

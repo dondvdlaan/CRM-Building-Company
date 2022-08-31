@@ -25,10 +25,9 @@ public class Customer {
 
     // region 1 Constructors
     // For the sake of JPA
-    protected Customer(){}
+    public Customer(){}
 
-    // Create instances of Customer to be saved to the database
-      public Customer(Integer custID, String custFirstName, String custLastName, String custEmail, String custTel, String custStreet, String custHouseNumber, String custZipCode, String custCity, String custCountry, Timestamp custRegistrationDate) {
+    public Customer(Integer custID, String custFirstName, String custLastName, String custEmail, String custTel, String custStreet, String custHouseNumber, String custZipCode, String custCity, String custCountry, Timestamp custRegistrationDate) {
         this.custID = custID;
         this.custFirstName = custFirstName;
         this.custLastName = custLastName;
@@ -42,15 +41,50 @@ public class Customer {
         this.custRegistrationDate = custRegistrationDate;
     }
 
-    // Testing
     public Customer(String custFirstName, String custLastName) {
-        this.custFirstName  = custFirstName;
-        this.custLastName   = custLastName;
-        this.custRegistrationDate   = custRegistrationDate;
+        this.custFirstName = custFirstName;
+        this.custLastName = custLastName;
     }
-    // END Testing
 
-    // region 2 Getters and Setters
+    public Integer getCustID() {
+        return custID;
+    }
+
+    public void setCustID(Integer custID) {
+        this.custID = custID;
+    }
+
+    public String getCustFirstName() {
+        return custFirstName;
+    }
+
+    public void setCustFirstName(String custFirstName) {
+        this.custFirstName = custFirstName;
+    }
+
+    public String getCustLastName() {
+        return custLastName;
+    }
+
+    public void setCustLastName(String custLastName) {
+        this.custLastName = custLastName;
+    }
+
+    public String getCustEmail() {
+        return custEmail;
+    }
+
+    public void setCustEmail(String custEmail) {
+        this.custEmail = custEmail;
+    }
+
+    public String getCustTel() {
+        return custTel;
+    }
+
+    public void setCustTel(String custTel) {
+        this.custTel = custTel;
+    }
 
     public String getCustStreet() {
         return custStreet;
@@ -98,56 +132,5 @@ public class Customer {
 
     public void setCustRegistrationDate(Timestamp custRegistrationDate) {
         this.custRegistrationDate = custRegistrationDate;
-    }
-
-    public String getCustTel() {
-        return custTel;
-    }
-
-    public void setCustTel(String custTel) {
-        this.custTel = custTel;
-    }
-
-    public Integer getCustID() {
-        return custID;
-    }
-    public String getCustFirstName() {
-        return custFirstName;
-    }
-    public String getCustLastName() {
-        return custLastName;
-    }
-    public String getCustEmail() {
-        return custEmail;
-    }
-
-    public void setCustID(Integer custID) {
-        this.custID = custID;
-    }
-    public void setCustFirstName(String custFirstName) {
-        this.custFirstName = custFirstName;
-    }
-    public void setCustLastName(String custLastName) {
-        this.custLastName = custLastName;
-    }
-    public void setCustEmail(String custEmail) {
-        this.custEmail = custEmail;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "custID=" + custID +
-                ", custFirstName='" + custFirstName + '\'' +
-                ", custLastName='" + custLastName + '\'' +
-                ", custEmail='" + custEmail + '\'' +
-                ", custTel='" + custTel + '\'' +
-                ", custStreet='" + custStreet + '\'' +
-                ", custHouseNumber='" + custHouseNumber + '\'' +
-                ", custZipCode='" + custZipCode + '\'' +
-                ", custCity='" + custCity + '\'' +
-                ", custCountry='" + custCountry + '\'' +
-                ", custRegistrationDate=" + custRegistrationDate +
-                '}';
     }
 }

@@ -35,15 +35,29 @@ export function dbApi<T>
     data}
 
     console.log("config: ",config)
+
   axios(config)
   .then((response: AxiosResponse<any>) =>{
     console.log("response :", response.data )
     return callback(response.data)
-  }  )
-  .catch(function (error) {
+  })
+  .catch(error => {
     // handle error
-    console.log(error);
+    alert(error.response.status);
   })
 
+}
+export const simplifiedDBApi =  
+(method: Method, path:string, data = {}):any =>{
+
+  // Constants
+  const config = {
+    method,
+    url: `${BASE_URL}${path}`,
+    data}
+
+    console.log("config: ",config)
+
+  return axios(config)
 }
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.CRM.Building.Company.model.Customer;
 import server.CRM.Building.Company.model.Greeting;
+import server.CRM.Building.Company.model.Project;
 import server.CRM.Building.Company.repository.CustomerRepository;
 import server.CRM.Building.Company.repository.ProductRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
@@ -85,6 +86,15 @@ public class SpringServer {
 
         System.out.println("allProjects");
         return projectRepository.findAll();
+    }
+    // Get project
+    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
+    @GetMapping("/project/{id}")
+    public Project getProject(@PathVariable Integer id){
+
+        Optional<Project> project = projectRepository.findById(id);
+        System.out.println("getProject");
+        return project.get();
     }
 
     // Testing

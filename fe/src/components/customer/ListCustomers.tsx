@@ -1,5 +1,5 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import {dbApi, useDBApi } from "../../shared/DBApi";
+import {dbApi, simplifiedDBApi, useDBApi } from "../../shared/DBApi";
 import { useTheme,  
         createTheme, 
         ThemeProvider,
@@ -32,16 +32,28 @@ const navigate  = useNavigate();
 // Wait till rows are there
 if(!rows) return(<p>Lade..</p>);
 
+// Error messages
+const errMessageDelete  = "Can not delete customer,/n because project still exists.";
+
+
 // **************** Event handlers ****************
 const onEdit = (e: React.FormEvent,row:Customer)=>{
   e.preventDefault();
   navigate(`/editCustomer/${row.custID}`);
 }
+
 const onDel = (e: React.FormEvent,row:Customer)=>{
   e.preventDefault();
+
+  simplifiedDBApi("DELETE",`customer/${row.custID}`,{})
   // Callback to refresh page after API
-  dbApi("DELETE",`customer/${row.custID}`,() => window.location.reload());
+  .then(() => window.location.reload())
+  .catch((error: any) => {
+    // handle error
+    if (error.response.status === 500) alert(errMessageDelete);
+  })
 }
+
 return(
 <>
     {/* Navigation Bar */}
