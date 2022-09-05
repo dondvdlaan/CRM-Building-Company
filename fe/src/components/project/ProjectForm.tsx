@@ -2,86 +2,105 @@ import {
   TextField,
   Box,
   Grid,
-  Button
+  Button,
+  FormControl,
+  InputLabel,
+  Select
 } from '@mui/material'
-import React, { useState } from 'react'
+import MenuItem from '@mui/material/MenuItem';
+import React, { SetStateAction, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
+import Autocomplete from '@mui/material/Autocomplete';
+
 import {
   useTheme,
   ThemeProvider
 } from '@mui/material/styles';
-import { Customer, CustomerWORegDate } from '../../types/Customer';
-import { simplifiedDBApi } from '../../shared/DBApi';
+import { simplifiedDBApi, useDBApi } from '../../shared/DBApi';
 import { Method } from "axios";
+import { Project, ProjectWCustomer, RawProjectWCustomer } from '../../types/Project';
+import { Customer } from '../../types/Customer';
 
-interface Props extends Customer{
+interface Props extends ProjectWCustomer{
   isEdit: boolean;
   currentPage: string;
 }
 
 /**
- * Form to create and edit Customer
+ * Form to create and edit Project
  */
-export default function CustomerForm(props:Props) {
-
+export default function ProjectForm(props:Props) {
+  
   // **************** Constants and variables **************** 
+  // Retrieve customers from DB
+  const [customers] = useDBApi<Customer[]>("GET","allCustomers")
   // Input fields
+  const [projTitle, setProjTitle] = useState(props.projTitle);
+  const [projDesc, setProjDesc] = useState(props.projDesc);
+  const [projType, setProjType] = useState(props.projType);
+  const [projLand, setProjLand] = useState(props.projLand);
+  const [projSurface, setProjSurface] = useState(props.projSurface);
+  const [projStart, setProjStart] = useState(props.projStart);
+  const [projNote, setProjNote] = useState(props.projNote);
+  const [projStreet, setProjStreet] = useState(props.projStreet);
+  const [projHouseNumber, setProjHouseNumber] = useState(props.projHouseNumber);
+  const [projZipCode, setProjZipCode] = useState(props.projZipCode);
+  const [projCity, setProjCity] = useState(props.projCity);
+  const [projCountry, setProjCountry] = useState(props.projCountry);
   const [custFirstName, setCustFirstName] = useState(props.custFirstName);
   const [custLastName, setCustLastName] = useState(props.custLastName);
-  const [custTel, setCustTel] = useState(props.custTel);
-  const [custEmail, setCustEmail] = useState(props.custEmail);
-  const [custStreet, setCustStreet] = useState(props.custStreet);
-  const [custHouseNumber, setCustHouseNumber] = useState(props.custHouseNumber);
-  const [custZipCode, setCustZipCode] = useState(props.custZipCode);
-  const [custCity, setCustCity] = useState(props.custCity);
-  const [custCountry, setCustCountry] = useState(props.custCountry);
-  // Not used as input field, but to complete Customer object ti be sent to DB
-  const [custRegistrationDate, setCustRegistrationDate] = useState(props.custRegistrationDate);
+  const [custID, setCustID] = useState(props.custID);
 
+  
   // Error states
-  const [errorFirstName, setErrorFirstName] = useState(false);
-  const [errorLastName, setErrorLastName]   = useState(false);
-
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [errorDesc, setErrorDesc]   = useState(false);
+  
+ 
   // Error messages
-  const errMessageName    = "Please fill in your name";
-  const errMessageEmail   = "Incorrect email, format is a@bcd.efg";
-
+  const errMessageTitle    = "Please fill in Title and Description";
 
   const theme = useTheme();
   const navigate = useNavigate();
+  let customerName: String = "";
+  const options: string[] = [];
+
   
-  //Minimum requirements for email input field
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
-  
-//Compose customer payload object
-  const customer = () =>
+//Compose project payload object
+  const project= () =>
     ({
-      custFirstName,
-      custLastName,
-      custTel,
-      custEmail,
-      custStreet,
-      custHouseNumber,
-      custZipCode,
-      custCity,
-      custCountry,
-      custRegistrationDate
+      projID: props.projID,
+      projTitle,
+      projDesc,
+      projType,
+      projLand: 0,
+      projSurface,
+      projStart,
+      projNote,
+      projStreet,
+      projHouseNumber,
+      projZipCode,
+      projCity,
+      projCountry,
+    })
+  const product=()=>
+    ({
+      productItem: "Itempie2",
+      productDescription: "Bescrijving2",
+      productDetails: "kleinifheden2"
     })
 
-// **************** Functions ****************
-/**
- * Function to check correct format of Email. When Email not avialable, empty string
- * , ^$, is also good.
- * 
- * @param email  : string  - Email to be checked
- * @returm       ; boolean - True if email is valid
- */
-const isEmailValid = (email:string): boolean =>{
+// Wait till customers arrived
+if(!customers) return(<p>Lade...</p>)
 
-// Check if email input is according Regex or is not entered(empty string)
-  return ((email.match(emailRegex) || email.match(/^$/)) === null)? false:true
-} 
+console.log("PFormCustID", custID)
+console.log("Cust Name", custFirstName + custLastName)
+
+
+// **************** Functions ****************
+customers.map(customer=>options.push(customer.custFirstName))
+console.log("options", options)
 
 /**
  * Check form user inputs before dispatch
@@ -90,35 +109,39 @@ const checkFormInputs = (): boolean =>{
   // Variable
   let formOK = false;
   
-  // Check if First name or Last name are empty or email is not valid
-  if(custFirstName === "" || custLastName === "" || !isEmailValid(custEmail)){
-    setErrorFirstName(true)
-    setErrorLastName(true)
+  // Check if Title or Description are empty, if so error
+  if(projTitle === "" || projDesc === "" ){
+    setErrorTitle(true)
+    setErrorDesc(true)
   }
   else{
-    setErrorFirstName(false);
-    setErrorLastName(false);
+    setErrorTitle(false);
+    setErrorDesc(false);
     formOK = true;
   }
   return formOK;
 }
 
-// **************** Event handlers **************** 
-  const onHandleCustomer = (e: React.FormEvent) => {
+// **************** Event handlers ****************
+const handleCustomer = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setCustID(event.target.value);
+}; 
 
-    if(checkFormInputs() ){
+const onHandleProject = (e: React.FormEvent) => {
 
-      //Prepare message and send to DB
-      const [method, path]: [Method, string] = props.isEdit?
-      ["PUT", `customer/${props.custID}`]:
-      ["POST", "customer"];
+  if(checkFormInputs() ){
+
+    //Prepare message and send to DB
+    const [method, path]: [Method, string] = props.isEdit?
+    ["PUT", `customer/${custID}/project`]:
+    ["POST", `customer/${custID}/project`];
   
-      simplifiedDBApi(method, path, customer())
-      // Callback
-      .then(()=>navigate("/allCustomers"))
-      .catch((error: any) => {
-          console.log(error.message)
-        })
+     simplifiedDBApi(method, path, project())
+    // Callback
+    .then(()=>navigate("/allProjects"))
+    .catch((error: any) => {
+        console.log(error.message)
+      })
     }
   }
 
@@ -129,102 +152,125 @@ const checkFormInputs = (): boolean =>{
         <ButtonAppBar currentPage={props.currentPage}/>
       </ThemeProvider>
 
-      {/* Customer Form */}
+      {/* project Form */}
       <Box
         component="form"
         border={1} borderColor="grey"
         sx={{
-          '& .MuiTextField-root': { m: 2, width: '20ch' },
+          '& .MuiTextField-root': { mt:2, m: 2, width: '4 0ch' },
         }}
         noValidate
         autoComplete="off"
       >
+      <Grid container spacing={1} columns={5}>
+        <Grid item xs={1}>
+            <br />
+            <TextField
+              id="outlined-select-currency"
+              select
+              label="Select"
+              value={custID}
+              onChange={handleCustomer}
+              helperText="Please select customer"
+            >
+                <MenuItem value="">
+                  {props.isEdit ? custFirstName + " " + custLastName : ""}
+                </MenuItem>
+              {customers.map((customer) => (
+                <MenuItem key={customer.custID} value={customer.custID}>
+                  {customer.custFirstName + " " + customer.custLastName}
+                </MenuItem>
+              ))}
+            </TextField>
+            
+          </Grid>  
+        </Grid>
         <Grid container spacing={1} columns={5}>
           <Grid item xs={1}>
             <TextField
-              value={custFirstName}
-              onChange={(e) => setCustFirstName(e.target.value)}
+              value={projTitle}
+              onChange={(e) => setProjTitle(e.target.value)}
               required={true}
-              label="First name"
-              error={errorFirstName}
-              helperText={errorFirstName ? errMessageName : ""}
+              label="Project Title"
+              error={errorTitle}
+              helperText={errorTitle ? errMessageTitle : ""}
             // 
             />
           </Grid>
           <Grid item xs={1}>
             <TextField
-              value={custLastName}
-              onChange={(e) => setCustLastName(e.target.value)}
+              value={projDesc}
+              onChange={(e) => setProjDesc(e.target.value)}
               required={true}
-              label="Last name"
-              error={errorLastName}
-              helperText={errorLastName ? errMessageName : ""}
+              label="Project Description"
+              error={errorDesc}
+              helperText={errorDesc ? errMessageTitle : ""}
             />
           </Grid>
         </Grid>
-        <Grid container spacing={1} columns={5}>
+        {/* <Grid container spacing={1} columns={5}>
           <Grid item xs={1}>
             <TextField
-              value={custTel}
-              onChange={(e) => setCustTel(e.target.value)}
+              value={projTel}
+              onChange={(e) => setprojTel(e.target.value)}
               required={false}
               label="Tel"
             />
           </Grid>
           <Grid item xs={1}>
             <TextField
-              value={custEmail}
-              onChange={(e) => setCustEmail(e.target.value)}
+              value={projEmail}
+              onChange={(e) => setprojEmail(e.target.value)}
               required={false}
               label="Email"
-              error={!isEmailValid(custEmail)}
-              helperText={!isEmailValid(custEmail)?errMessageEmail:""}
+              error={!isEmailValid(projEmail)}
+              helperText={!isEmailValid(projEmail)?errMessageEmail:""}
             />
           </Grid>
         </Grid>
         <Grid container spacing={0.3} columns={5}>
           <Grid item xs={1}>
             <TextField
-              value={custStreet}
-              onChange={(e) => setCustStreet(e.target.value)}
+              value={projStreet}
+              onChange={(e) => setprojStreet(e.target.value)}
               required={false}
               label="Street"
             />
           </Grid>
           <Grid item xs={1}>
             <TextField
-              value={custHouseNumber}
-              onChange={(e) => setCustHouseNumber(e.target.value)}
+              value={projHouseNumber}
+              onChange={(e) => setprojHouseNumber(e.target.value)}
               required={false}
               label="House number"
             />
           </Grid>
           <Grid item xs={1}>
             <TextField
-              value={custZipCode}
-              onChange={(e) => setCustZipCode(e.target.value)}
+              value={projZipCode}
+              onChange={(e) => setprojZipCode(e.target.value)}
               required={false}
               label="Zip code"
             />
           </Grid>
           <Grid item xs={1}>
             <TextField
-              value={custCity}
-              onChange={(e) => setCustCity(e.target.value)}
+              value={projCity}
+              onChange={(e) => setprojCity(e.target.value)}
               required={false}
               label="City"
             />
           </Grid>
           <Grid item xs={1}>
             <TextField
-              value={custCountry}
-              onChange={(e) => setCustCountry(e.target.value)}
+              value={projCountry}
+              onChange={(e) => setprojCountry(e.target.value)}
               required={false}
               label="Country"
             />
           </Grid>
-        </Grid>
-        <Button type="button" variant="outlined" onClick={onHandleCustomer}  >Finished</Button>
+        </Grid> */}
+        <Button type="button" variant="outlined" onClick={onHandleProject}  >Finished</Button>
       </Box>
     </>
   )

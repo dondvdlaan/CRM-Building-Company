@@ -22,18 +22,12 @@ public class Main {
 	public CommandLineRunner demo(ProjectRepository repositoryPRJ,CustomerRepository repositoryCTM ) {
 		return (args) -> {
 			//save a few projects
-			Project project =new Project("TestProject", "TestDetails");
-			Customer customer = (new Customer("TestName","TestLastNmae","a@bbb.ccc"));
+			//Project project =new Project("TestProject", "TestDetails");
+			//Customer customer = (new Customer("TestName","TestLastNmae","a@bbb.ccc"));
 
-			project.setCustomer(customer);
+			//project.setCustomer(customer);
 
-			repositoryPRJ.save(project);
-
-
-
-
-
-
+			//repositoryPRJ.save(project);
 
 		};
 	}

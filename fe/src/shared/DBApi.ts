@@ -38,7 +38,7 @@ export function dbApi<T>
 
   axios(config)
   .then((response: AxiosResponse<any>) =>{
-    console.log("response :", response.data )
+    console.log("dbApi response :", response.data )
     return callback(response.data)
   })
   .catch(error => {
@@ -56,7 +56,7 @@ export const simplifiedDBApi =
     url: `${BASE_URL}${path}`,
     data}
 
-    console.log("config: ",config)
+    console.log("APIconfig: ",config)
 
   return axios(config)
 }

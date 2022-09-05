@@ -10,25 +10,24 @@ public class Project {
     private Integer projID;
     private String projTitle;
     private String projDesc;
+    private String projType;
+    private Boolean projLand;
+    private Double projSurface;
+    private String projStart;
+    private String projNote;
+    private String projStreet;
+    private String projHouseNumber;
+    private String projZipCode;
+    private String projCity;
+    private String projCountry;
 
+    // Each customer can be assigned to 1 project
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn( name = "custid" )
     private Customer customer;
 
     // region 1 Constructors
     public Project() {
-    }
-
-    public Project(Integer projID, String projTitle, String projDesc, Customer customer) {
-        this.projID = projID;
-        this.projTitle = projTitle;
-        this.projDesc = projDesc;
-        this.customer = customer;
-    }
-
-    public Project(String projTitle, String projDesc) {
-        this.projTitle = projTitle;
-        this.projDesc = projDesc;
     }
 
     public Integer getProjID() {
@@ -55,11 +54,110 @@ public class Project {
         this.projDesc = projDesc;
     }
 
+    public String getProjType() {
+        return projType;
+    }
+
+    public void setProjType(String projType) {
+        this.projType = projType;
+    }
+
+    public Boolean getProjLand() {
+        return projLand;
+    }
+
+    public void setProjLand(Boolean projLand) {
+        this.projLand = projLand;
+    }
+
+    public Double getProjSurface() {
+        return projSurface;
+    }
+
+    public void setProjSurface(Double projSurface) {
+        this.projSurface = projSurface;
+    }
+
+    public String getProjStart() {
+        return projStart;
+    }
+
+    public void setProjStart(String projStart) {
+        this.projStart = projStart;
+    }
+
+    public String getProjNote() {
+        return projNote;
+    }
+
+    public void setProjNote(String projNote) {
+        this.projNote = projNote;
+    }
+
+    public String getProjStreet() {
+        return projStreet;
+    }
+
+    public void setProjStreet(String projStreet) {
+        this.projStreet = projStreet;
+    }
+
+    public String getProjHouseNumber() {
+        return projHouseNumber;
+    }
+
+    public void setProjHouseNumber(String projHouseNumber) {
+        this.projHouseNumber = projHouseNumber;
+    }
+
+    public String getProjZipCode() {
+        return projZipCode;
+    }
+
+    public void setProjZipCode(String projZipCode) {
+        this.projZipCode = projZipCode;
+    }
+
+    public String getProjCity() {
+        return projCity;
+    }
+
+    public void setProjCity(String projCity) {
+        this.projCity = projCity;
+    }
+
+    public String getProjCountry() {
+        return projCountry;
+    }
+
+    public void setProjCountry(String projCountry) {
+        this.projCountry = projCountry;
+    }
+
     public Customer getCustomer() {
-        return customer;
+       return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "projID=" + projID +
+                ", projTitle='" + projTitle + '\'' +
+                ", projDesc='" + projDesc + '\'' +
+                ", projType='" + projType + '\'' +
+                ", projLand=" + projLand +
+                ", projSurface=" + projSurface +
+                ", projStart='" + projStart + '\'' +
+                ", projNote='" + projNote + '\'' +
+                ", projStreet='" + projStreet + '\'' +
+                ", projHouseNumber='" + projHouseNumber + '\'' +
+                ", projZipCode='" + projZipCode + '\'' +
+                ", projCity='" + projCity + '\'' +
+                ", projCountry='" + projCountry + '\'' +
+                '}';
     }
 }

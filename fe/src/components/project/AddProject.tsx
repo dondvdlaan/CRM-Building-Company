@@ -9,19 +9,27 @@ export const AddProject = (): ReactElement =>{
 
 return(
 <ProjectForm
+    projID=""
+    projTitle="aaaaaa"
+    projDesc=""
+    projType=""
+    projLand={false}
+    projSurface={0}
+    projStart=""
+    projNote=""
+    projStreet=""
+    projHouseNumber=""
+    projZipCode=""
+    projCity=""
+    projCountry=""
     custID=""
     custFirstName=""
     custLastName=""
     custTel=""
     custEmail=""
-    custStreet=""
-    custHouseNumber=""
-    custZipCode=""
-    custCity=""
-    custCountry=""
-    custRegistrationDate=""
     isEdit={false}
     currentPage="Add Project"
+
 />
 
 )

@@ -1,8 +1,5 @@
 package server.CRM.Building.Company.controller;
 
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.CRM.Building.Company.model.Customer;
@@ -12,14 +9,19 @@ import server.CRM.Building.Company.repository.CustomerRepository;
 import server.CRM.Building.Company.repository.ProductRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
+
 @RestController
-public class SpringServer {
+public class CustomerController {
 
     // Testing
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-    @GetMapping("/greeting")
+    @GetMapping("/greeting2")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
@@ -31,6 +33,9 @@ public class SpringServer {
 
     @Autowired // This means to get the bean called projectRepository
     private ProjectRepository projectRepository;
+
+    @Autowired // This means to get the bean called productRepository
+    private ProductRepository productRepository;
 
     // ------------- Routes -------------
     // Show all customers
@@ -78,23 +83,6 @@ public class SpringServer {
 
         System.out.println("addCustomer");
         customerRepository.save(customer);
-    }
-    // Show all projects
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible form REACT
-    @RequestMapping("/allProjects")
-    public @ResponseBody Iterable getAllProjects(){
-
-        System.out.println("allProjects");
-        return projectRepository.findAll();
-    }
-    // Get project
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
-    @GetMapping("/project/{id}")
-    public Project getProject(@PathVariable Integer id){
-
-        Optional<Project> project = projectRepository.findById(id);
-        System.out.println("getProject");
-        return project.get();
     }
 
     // Testing

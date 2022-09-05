@@ -30,6 +30,9 @@ export default function BasicMenu() {
   const onProjects = () => {
     navigate("/allProjects");
   };
+  const onAddProject = () => {
+    navigate("/addProject");
+  };
   const onCustomers = () => {
     navigate("/allCustomers");
   };
@@ -61,6 +64,7 @@ export default function BasicMenu() {
         }}
       >
         <MenuItem onClick={onProjects}>Projects</MenuItem>
+        <MenuItem onClick={onAddProject}>Add Project</MenuItem>
         <MenuItem onClick={onCustomers}>Customers</MenuItem>
         <MenuItem onClick={onAddCustomer}>Add Customer</MenuItem>
         <MenuItem onClick={onReferences}>References</MenuItem>

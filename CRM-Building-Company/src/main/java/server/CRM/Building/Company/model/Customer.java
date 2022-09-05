@@ -23,6 +23,7 @@ public class Customer {
     @CreationTimestamp
     private Timestamp custRegistrationDate;
 
+
     // region 1 Constructors
     // For the sake of JPA
     public Customer(){}
@@ -48,6 +49,7 @@ public class Customer {
     }
 
     // region 2 Getters and Setters
+
     public Integer getCustID() {
         return custID;
     }
@@ -134,5 +136,23 @@ public class Customer {
 
     public void setCustRegistrationDate(Timestamp custRegistrationDate) {
         this.custRegistrationDate = custRegistrationDate;
+    }
+    // region 3 toString
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "custID=" + custID +
+                ", custFirstName='" + custFirstName + '\'' +
+                ", custLastName='" + custLastName + '\'' +
+                ", custEmail='" + custEmail + '\'' +
+                ", custTel='" + custTel + '\'' +
+                ", custStreet='" + custStreet + '\'' +
+                ", custHouseNumber='" + custHouseNumber + '\'' +
+                ", custZipCode='" + custZipCode + '\'' +
+                ", custCity='" + custCity + '\'' +
+                ", custCountry='" + custCountry + '\'' +
+                ", custRegistrationDate=" + custRegistrationDate +
+                '}';
     }
 }

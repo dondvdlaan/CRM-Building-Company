@@ -1,6 +1,9 @@
 package server.CRM.Building.Company.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Product {
@@ -12,52 +15,65 @@ public class Product {
     private String productDescription;
     private String productDetails;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn( name = "custid" )
+    private Customer customer;
+
     // region 1 Constructor
     public Product(){ }
 
-    public Product(Integer productID, String productItem, String productDescription, String productDetails) {
-        this.prodID = productID;
-        this.productItem = productItem;
-        this.productDescription = productDescription;
-        this.productDetails = productDetails;
-    }
+
     // region 2 Getters and Setters
+
 
     public Integer getProdID() {
         return prodID;
-    }
-    public String getProductItem() {
-        return productItem;
-    }
-    public String getProductDescription() {
-        return productDescription;
-    }
-    public String getProductDetails() {
-        return productDetails;
     }
 
     public void setProdID(Integer prodID) {
         this.prodID = prodID;
     }
+
+    public String getProductItem() {
+        return productItem;
+    }
+
     public void setProductItem(String productItem) {
         this.productItem = productItem;
     }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
     }
+
+    public String getProductDetails() {
+        return productDetails;
+    }
+
     public void setProductDetails(String productDetails) {
         this.productDetails = productDetails;
     }
 
-    //region 3. toString
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+//region 3. toString
+
+
     @Override
     public String toString() {
         return "Product{" +
-                "intProductID='" + prodID + '\'' +
-                ", strProductItem='" + productItem + '\'' +
-                ", strProductDescription='" + productDescription + '\'' +
-                ", strProductDetails='" + productDetails + '\'' +
+                "productItem='" + productItem + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", productDetails='" + productDetails + '\'' +
                 '}';
     }
-
 }

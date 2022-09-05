@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid, GridColDef, GridEventListener, GridValueGetterParams } from '@mui/x-data-grid';
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import { useDBApi } from '../../shared/DBApi';
-import { Project } from '../../types/Project';
+import { Project, RawProjectWCustomer } from '../../types/Project';
 import { useNavigate } from 'react-router-dom';
 
 // Definition table headers and fields
@@ -20,7 +20,7 @@ const columns: GridColDef[] = [
 export const ListProjects = () =>{
 
 // **************** Constants and variables ****************
-const [projects ]   = useDBApi<Project[]>('GET','allProjects')
+const [projects ]   = useDBApi<RawProjectWCustomer[]>('GET','allProjects')
 const navigate      = useNavigate();
 
 // Wait till projects arrived

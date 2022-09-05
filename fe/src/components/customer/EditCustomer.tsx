@@ -16,7 +16,7 @@ const [customer] = useDBApi<Customer>("GET",`customer/${params.id}`)
 
 if(customer === undefined || customer=== null) return(<p>Lade..</p>);
 
-console.log("Customer",customer);
+console.log("Edit Customer",customer);
 
 return(
 <CustomerForm

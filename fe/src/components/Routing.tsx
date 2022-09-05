@@ -8,6 +8,7 @@ import  {ListReferences}  from "./references/ListReferences";
 import { Summary } from "./Summary";
 import { ProjectDetails } from "./project/ProjectDetails";
 import { AddProject } from "./project/AddProject";
+import { EditProject } from "./project/EditProject";
 
 export default function Routing(): ReactElement {
   return (
@@ -20,6 +21,7 @@ export default function Routing(): ReactElement {
       <Route path="/allProjects"        element={<ListProjects />} />
       <Route path="/projectDetails/:id" element={<ProjectDetails />} />
       <Route path="/addProject"         element={<AddProject />} />
+      <Route path="/editProject/:id"    element={<EditProject />} />
 
       <Route path="/allReferences"      element={<ListReferences />} />
 
