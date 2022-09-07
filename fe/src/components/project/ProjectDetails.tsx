@@ -1,6 +1,6 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import {useParams,Link, useNavigate} from "react-router-dom";
-import { useDBApi } from "../../shared/DBApi";
+import { simplifiedDBApi, useDBApi } from "../../shared/DBApi";
 import { Project, ProjectWCustomer, RawProjectWCustomer } from "../../types/Project";
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -27,8 +27,12 @@ console.log("project ", project)
 
 // *********** Event Listeners ***********
 const onDelete = () =>{
-  alert("help");
+
+simplifiedDBApi("DELETE",`project/${params.id}`)
+.then((res: any) =>console.log("res", res))
+.then(()=>navigate("/allProjects"))
 }
+
     return(
 <>
     {/* Navigation bar */}
@@ -50,10 +54,10 @@ const onDelete = () =>{
         <Typography variant="h4" align='center'>{project.projTitle}</Typography>
         <Typography variant="body1" ml={2} >Description: {project.projDesc}</Typography>
         <Typography variant="body1" ml={2} >Type: {project.projType}</Typography>
-        <Typography variant="body1" ml={2} >Land available: {project.projNote}</Typography>
-        <Typography variant="body1" ml={2} >Note: {project.projLand}</Typography>
+        <Typography variant="body1" ml={2} >Land available: {project.projLand}</Typography>
+        <Typography variant="body1" ml={2} >Note: {project.projNote}</Typography>
         <Typography variant="body1" ml={2} >Netto surface m^2: {project.projSurface}</Typography>
-        <Typography variant="body1" ml={2} >Project start: {project.projStart}</Typography>
+        <Typography variant="body1" ml={2} >Project start: {project.projStart.slice(0,10)}</Typography>
         <Typography variant="body1" ml={2} >Street: {project.projStreet}</Typography>
         <Typography variant="body1" ml={2} >House number: {project.projHouseNumber}</Typography>
         <Typography variant="body1" ml={2} >Zip code: {project.projZipCode}</Typography>

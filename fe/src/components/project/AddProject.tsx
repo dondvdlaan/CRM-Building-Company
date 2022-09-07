@@ -10,14 +10,16 @@ export const AddProject = (): ReactElement =>{
 return(
 <ProjectForm
     projID=""
-    projTitle="aaaaaa"
+    projTitle=""
     projDesc=""
     projType=""
-    projLand={false}
-    projSurface={0}
-    projStart=""
+    projLand=""
+    projSurface="0"
+    projStart={new Date().toString()}
+    projStatus=""
+    projLostComment=""
     projNote=""
-    projStreet=""
+    projStreet=""   
     projHouseNumber=""
     projZipCode=""
     projCity=""

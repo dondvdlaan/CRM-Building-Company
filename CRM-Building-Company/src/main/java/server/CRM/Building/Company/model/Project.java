@@ -11,18 +11,20 @@ public class Project {
     private String projTitle;
     private String projDesc;
     private String projType;
-    private Boolean projLand;
-    private Double projSurface;
+    private String projLand;
+    private String projSurface;
     private String projStart;
     private String projNote;
+    private String projStatus;
+    private String projLostComment;
     private String projStreet;
     private String projHouseNumber;
     private String projZipCode;
     private String projCity;
     private String projCountry;
 
-    // Each customer can be assigned to 1 project
-    @OneToOne(cascade = CascadeType.ALL)
+    // A customer can be assigned to only 1 project
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn( name = "custid" )
     private Customer customer;
 
@@ -62,24 +64,32 @@ public class Project {
         this.projType = projType;
     }
 
-    public Boolean getProjLand() {
+    public String getProjLand() {
         return projLand;
     }
 
-    public void setProjLand(Boolean projLand) {
+    public void setProjLand(String projLand) {
         this.projLand = projLand;
     }
 
-    public Double getProjSurface() {
+    public String getProjSurface() {
         return projSurface;
     }
 
-    public void setProjSurface(Double projSurface) {
+    public void setProjSurface(String projSurface) {
         this.projSurface = projSurface;
     }
 
     public String getProjStart() {
         return projStart;
+    }
+
+    public String getProjLostComment() {
+        return projLostComment;
+    }
+
+    public void setProjLostComment(String projLostComment) {
+        this.projLostComment = projLostComment;
     }
 
     public void setProjStart(String projStart) {
@@ -142,6 +152,14 @@ public class Project {
         this.customer = customer;
     }
 
+    public String getProjStatus() {
+        return projStatus;
+    }
+
+    public void setProjStatus(String projStatus) {
+        this.projStatus = projStatus;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
@@ -149,15 +167,18 @@ public class Project {
                 ", projTitle='" + projTitle + '\'' +
                 ", projDesc='" + projDesc + '\'' +
                 ", projType='" + projType + '\'' +
-                ", projLand=" + projLand +
-                ", projSurface=" + projSurface +
+                ", projLand='" + projLand + '\'' +
+                ", projSurface='" + projSurface + '\'' +
                 ", projStart='" + projStart + '\'' +
                 ", projNote='" + projNote + '\'' +
+                ", projStatus='" + projStatus + '\'' +
+                ", projLostComment='" + projLostComment + '\'' +
                 ", projStreet='" + projStreet + '\'' +
                 ", projHouseNumber='" + projHouseNumber + '\'' +
                 ", projZipCode='" + projZipCode + '\'' +
                 ", projCity='" + projCity + '\'' +
                 ", projCountry='" + projCountry + '\'' +
+                ", customer=" + customer +
                 '}';
     }
 }

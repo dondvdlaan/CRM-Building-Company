@@ -10,6 +10,7 @@ const columns: GridColDef[] = [
     { field: 'projID', headerName: 'ID', width: 70 },
     { field: 'projTitle', headerName: 'Project Title', width: 130 },
     { field: 'projDesc', headerName: 'Project Details', width: 130 },
+    { field: 'projStatus', headerName: 'Project Status', width: 130 },
     { field: 'custFirstName', headerName: 'First Name', width: 130 },
     { field: 'custLastName', headerName: 'Last Name', width: 130 },
   ];
@@ -35,6 +36,7 @@ for(let project of projects){
           projID        : project.projID,
           projTitle     : project.projTitle,
           projDesc      : project.projDesc,
+          projStatus    : project.projStatus,
           custFirstName : project.customer.custFirstName,
           custLastName  : project.customer.custLastName
         }

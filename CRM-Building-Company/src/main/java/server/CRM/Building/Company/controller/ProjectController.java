@@ -105,4 +105,12 @@ public class ProjectController {
 
         projectRepository.save(project);
     }
+    // Delete project
+    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
+    @DeleteMapping("/project/{id}")
+    public void deleteProject(@PathVariable Integer id){
+
+        System.out.println("deleteProject");
+        projectRepository.deleteById(id);
+    }
 }

@@ -1,13 +1,14 @@
 
-
 export interface Project{
     projID: string;
     projTitle: string;
     projDesc: string;
     projType: string;
-    projLand: boolean;
-    projSurface: number;
+    projLand: string;
+    projSurface: string;
     projStart: string;
+    projStatus: string;
+    projLostComment: string
     projNote: string;
     projStreet: string;
     projHouseNumber: string;
@@ -17,16 +18,16 @@ export interface Project{
     custID: string
     }
 
-
-
 export interface ProjectWCustomer{
     projID: string;
     projTitle: string;
     projDesc: string;
     projType: string;
-    projLand: boolean;
-    projSurface: number;
+    projLand: string;
+    projSurface: string;
     projStart: string;
+    projStatus: string;
+    projLostComment: string;
     projNote: string;
     projStreet: string;
     projHouseNumber: string;
@@ -44,9 +45,11 @@ export interface RawProjectWCustomer{
     projTitle: string;
     projDesc: string;
     projType: string;
-    projLand: boolean;
-    projSurface: number;
+    projLand: string;
+    projSurface: string;
     projStart: string;
+    projStatus: string;
+    projLostComment: string;
     projNote: string;
     projStreet: string;
     projHouseNumber: string;

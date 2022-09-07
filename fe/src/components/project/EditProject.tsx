@@ -28,7 +28,9 @@ return(
     projType={project.projType}
     projLand={project.projLand}
     projSurface={project.projSurface}
-    projStart=""
+    projStatus={project.projStatus}
+    projLostComment={project.projLostComment}
+    projStart={project.projStart}
     projNote={project.projNote}
     projStreet={project.projStreet}
     projHouseNumber={project.projHouseNumber}

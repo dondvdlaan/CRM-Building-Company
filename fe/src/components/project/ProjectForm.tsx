@@ -5,13 +5,24 @@ import {
   Button,
   FormControl,
   InputLabel,
-  Select
+  Select,
+  NativeSelect,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText
 } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem';
 import React, { SetStateAction, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import Autocomplete from '@mui/material/Autocomplete';
+import DialogActions from '@mui/material/DialogActions';
 
 import {
   useTheme,
@@ -21,6 +32,10 @@ import { simplifiedDBApi, useDBApi } from '../../shared/DBApi';
 import { Method } from "axios";
 import { Project, ProjectWCustomer, RawProjectWCustomer } from '../../types/Project';
 import { Customer } from '../../types/Customer';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import helper from "./Helper"
 
 interface Props extends ProjectWCustomer{
   isEdit: boolean;
@@ -28,20 +43,22 @@ interface Props extends ProjectWCustomer{
 }
 
 /**
- * Form to create and edit Project
+ * Form to create and edit a Project
  */
 export default function ProjectForm(props:Props) {
   
   // **************** Constants and variables **************** 
-  // Retrieve customers from DB
+  // Retrieve customers from DB for pop-up window
   const [customers] = useDBApi<Customer[]>("GET","allCustomers")
-  // Input fields
+  
+  // Form Input fields
   const [projTitle, setProjTitle] = useState(props.projTitle);
   const [projDesc, setProjDesc] = useState(props.projDesc);
   const [projType, setProjType] = useState(props.projType);
   const [projLand, setProjLand] = useState(props.projLand);
   const [projSurface, setProjSurface] = useState(props.projSurface);
-  const [projStart, setProjStart] = useState(props.projStart);
+  const [projStart, setProjStart] = useState<Dayjs | null>(dayjs(props.projStart));
+  const [projStatus, setProjStatus] = useState(props.projStatus);
   const [projNote, setProjNote] = useState(props.projNote);
   const [projStreet, setProjStreet] = useState(props.projStreet);
   const [projHouseNumber, setProjHouseNumber] = useState(props.projHouseNumber);
@@ -51,21 +68,21 @@ export default function ProjectForm(props:Props) {
   const [custFirstName, setCustFirstName] = useState(props.custFirstName);
   const [custLastName, setCustLastName] = useState(props.custLastName);
   const [custID, setCustID] = useState(props.custID);
-
   
   // Error states
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorDesc, setErrorDesc]   = useState(false);
   
+  // Project Closed Lost comments
+  const [openProjLost, setOpenProjLost] = useState(true);
+  const [projLostComment, setProjLostComment] = useState(props.projLostComment);
  
   // Error messages
   const errMessageTitle    = "Please fill in Title and Description";
 
   const theme = useTheme();
   const navigate = useNavigate();
-  let customerName: String = "";
-  const options: string[] = [];
-
+  const types = ['Erdgeschoss','1,5 Geschoss','Erdgeschoos + Obengeschoss'];
   
 //Compose project payload object
   const project= () =>
@@ -74,9 +91,11 @@ export default function ProjectForm(props:Props) {
       projTitle,
       projDesc,
       projType,
-      projLand: 0,
+      projLand,
       projSurface,
       projStart,
+      projStatus,
+      projLostComment,
       projNote,
       projStreet,
       projHouseNumber,
@@ -84,24 +103,13 @@ export default function ProjectForm(props:Props) {
       projCity,
       projCountry,
     })
-  const product=()=>
-    ({
-      productItem: "Itempie2",
-      productDescription: "Bescrijving2",
-      productDetails: "kleinifheden2"
-    })
 
 // Wait till customers arrived
 if(!customers) return(<p>Lade...</p>)
 
-console.log("PFormCustID", custID)
-console.log("Cust Name", custFirstName + custLastName)
-
+console.log("LostComment ", projLostComment)
 
 // **************** Functions ****************
-customers.map(customer=>options.push(customer.custFirstName))
-console.log("options", options)
-
 /**
  * Check form user inputs before dispatch
  */
@@ -123,6 +131,14 @@ const checkFormInputs = (): boolean =>{
 }
 
 // **************** Event handlers ****************
+const onProjLostOpen = () => {
+  setOpenProjLost(true);
+};
+
+const onProjLostClose = () => {
+  setOpenProjLost(false);
+};
+
 const handleCustomer = (event: React.ChangeEvent<HTMLInputElement>) => {
   setCustID(event.target.value);
 }; 
@@ -157,7 +173,7 @@ const onHandleProject = (e: React.FormEvent) => {
         component="form"
         border={1} borderColor="grey"
         sx={{
-          '& .MuiTextField-root': { mt:2, m: 2, width: '4 0ch' },
+          '& .MuiTextField-root': { mt:1, ml: 2, width: '22ch' },
         }}
         noValidate
         autoComplete="off"
@@ -172,6 +188,10 @@ const onHandleProject = (e: React.FormEvent) => {
               value={custID}
               onChange={handleCustomer}
               helperText="Please select customer"
+              sx={{
+                ml: 2,
+                width: '20ch',
+                }}
             >
                 <MenuItem value="">
                   {props.isEdit ? custFirstName + " " + custLastName : ""}
@@ -185,7 +205,7 @@ const onHandleProject = (e: React.FormEvent) => {
             
           </Grid>  
         </Grid>
-        <Grid container spacing={1} columns={5}>
+      <Grid container spacing={0.5} columns={5}>
           <Grid item xs={1}>
             <TextField
               value={projTitle}
@@ -207,71 +227,185 @@ const onHandleProject = (e: React.FormEvent) => {
               helperText={errorDesc ? errMessageTitle : ""}
             />
           </Grid>
+          <Grid item xs={1}>
+            <FormControl fullWidth>
+              <InputLabel variant="standard" sx={{
+                ml: 2, mt: 1}} htmlFor="uncontrolled-native">
+                Type of Blockhouse
+              </InputLabel>
+              <NativeSelect
+                variant="outlined"
+                defaultValue={projType}
+                inputProps={{
+                name: 'age',
+                id: 'uncontrolled-native',
+              }}
+              sx={{ml: 2, p:2, width: '20ch'}}
+              onChange={(e) => setProjType(e.target.value)}
+              >
+                {props.isEdit ? 
+                <option >{projType}</option>
+                :
+                <option >{""}</option>
+              }
+                {helper.types.map((type: string)=>
+                <option key={type} >{type}</option>
+                  )}
+              </NativeSelect>
+            </FormControl>
+          </Grid>
+          <Grid item xs={1}>
+            <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">Building land available?</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue=""
+              name="radio-buttons-group"
+              value={projLand}
+              onChange={(e) => setProjLand(e.target.value)}
+            >
+              <FormControlLabel value="yes" control={<Radio />} label="yes" />
+              <FormControlLabel value="no" control={<Radio />} label="no" />
+            </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={1}>
+            <TextField
+              value={projNote}
+              onChange={(e) => setProjNote(e.target.value)}
+              required={false}
+              label="Note"
+              />
+          </Grid>
         </Grid>
-        {/* <Grid container spacing={1} columns={5}>
-          <Grid item xs={1}>
-            <TextField
-              value={projTel}
-              onChange={(e) => setprojTel(e.target.value)}
-              required={false}
-              label="Tel"
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <TextField
-              value={projEmail}
-              onChange={(e) => setprojEmail(e.target.value)}
-              required={false}
-              label="Email"
-              error={!isEmailValid(projEmail)}
-              helperText={!isEmailValid(projEmail)?errMessageEmail:""}
-            />
-          </Grid>
+      <Grid container spacing={1} columns={5}>
+        <Grid item xs={1}>
+          <TextField
+            value={projSurface}
+            onChange={(e) => setProjSurface(e.target.value)}
+            required={false}
+            label="Surface m2"
+          />
         </Grid>
-        <Grid container spacing={0.3} columns={5}>
-          <Grid item xs={1}>
-            <TextField
-              value={projStreet}
-              onChange={(e) => setprojStreet(e.target.value)}
-              required={false}
-              label="Street"
+        <Grid item xs={1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Start project"
+              inputFormat="DD/MM/YYYY"
+              value={projStart}
+              onChange={setProjStart}
+              renderInput={(params) => <TextField {...params} />}
             />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={1}>
+            <FormControl fullWidth>
+              <InputLabel variant="standard" sx={{
+                ml: 2, mt: 1}} htmlFor="uncontrolled-native">
+                Project Status
+              </InputLabel>
+              <NativeSelect
+                variant="outlined"
+                defaultValue={projStatus}
+                inputProps={{
+                id: 'uncontrolled-native',
+              }}
+              sx={{ml: 2, p:2, width: '20ch'}}
+              onChange={(e) => setProjStatus(e.target.value)}
+              >
+                {props.isEdit ? 
+                <option >{projStatus}</option>
+                :
+                <option >{""}</option>
+              }
+                {helper.status.map(status=>
+                <option key={status} >{status}</option>
+                  )}
+              </NativeSelect>
+            </FormControl>
           </Grid>
           <Grid item xs={1}>
-            <TextField
-              value={projHouseNumber}
-              onChange={(e) => setprojHouseNumber(e.target.value)}
-              required={false}
-              label="House number"
-            />
+            {projStatus === "Closed Lost"?
+              <Dialog open={openProjLost} onClose={onProjLostClose}>
+              <DialogTitle>Closed Lost Reason</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter reason for losing this project.
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  value={projLostComment}
+                  onChange={(e) => setProjLostComment(e.target.value)}
+                  margin="dense"
+                  id="name"
+                  label="Project Lost Reason"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={onProjLostClose}>Cancel</Button>
+                <Button onClick={onProjLostClose}>Save</Button>
+              </DialogActions>
+            </Dialog> 
+              :
+              <span>OK</span>  
+            }
+
           </Grid>
-          <Grid item xs={1}>
-            <TextField
-              value={projZipCode}
-              onChange={(e) => setprojZipCode(e.target.value)}
-              required={false}
-              label="Zip code"
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <TextField
-              value={projCity}
-              onChange={(e) => setprojCity(e.target.value)}
-              required={false}
-              label="City"
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <TextField
-              value={projCountry}
-              onChange={(e) => setprojCountry(e.target.value)}
-              required={false}
-              label="Country"
-            />
-          </Grid>
-        </Grid> */}
-        <Button type="button" variant="outlined" onClick={onHandleProject}  >Finished</Button>
-      </Box>
+      </Grid>
+      <Grid container spacing={1} columns={5}>
+        <Grid item xs={1}>
+          <TextField
+            value={projStreet}
+            onChange={(e) => setProjStreet(e.target.value)}
+            required={false}
+            label="Street"
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <TextField
+            value={projHouseNumber}
+            onChange={(e) => setProjHouseNumber(e.target.value)}
+            required={false}
+            label="House number"
+           />
+        </Grid>
+        <Grid item xs={1}>
+          <TextField
+            value={projZipCode}
+            onChange={(e) => setProjZipCode(e.target.value)}
+            required={false}
+            label="Zip code"
+           />
+         </Grid>
+         <Grid item xs={1}>
+           <TextField
+             value={projCity}
+             onChange={(e) => setProjCity(e.target.value)}
+             required={false}
+             label="City"
+           />
+         </Grid>
+         <Grid item xs={1}>
+           <TextField
+             value={projCountry}
+             onChange={(e) => setProjCountry(e.target.value)}
+             required={false}
+             label="Country"
+           />
+        </Grid>  
+      </Grid>
+        <Button 
+        type="button" 
+        variant="outlined" 
+        onClick={onHandleProject}  
+        sx={{ ml: 2, mt: 1, mb: 1}}
+        >
+        Finished
+        </Button>
+    </Box>
     </>
   )
 }

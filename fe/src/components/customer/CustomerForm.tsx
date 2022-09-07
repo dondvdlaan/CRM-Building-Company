@@ -227,7 +227,14 @@ const checkFormInputs = (): boolean =>{
             />
           </Grid>
         </Grid>
-        <Button type="button" variant="outlined" onClick={onHandleCustomer}  >Finished</Button>
+        <Button 
+        type="button" 
+        variant="outlined" 
+        onClick={onHandleCustomer}  
+        sx={{ ml: 2, mt: 1, mb: 1}}
+        >
+        Finished
+        </Button>
       </Box>
     </>
   )
