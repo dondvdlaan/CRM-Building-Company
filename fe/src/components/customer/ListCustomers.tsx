@@ -33,7 +33,7 @@ const navigate  = useNavigate();
 if(!rows) return(<p>Lade..</p>);
 
 // Error messages
-const errMessageDelete  = "Can not delete customer,/n because project still exists.";
+const errMessageDelete  = "Can not delete customer,\n because a project still exists.";
 
 
 // **************** Event handlers ****************

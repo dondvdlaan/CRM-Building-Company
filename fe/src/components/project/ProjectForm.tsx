@@ -82,7 +82,6 @@ export default function ProjectForm(props:Props) {
 
   const theme = useTheme();
   const navigate = useNavigate();
-  const types = ['Erdgeschoss','1,5 Geschoss','Erdgeschoos + Obengeschoss'];
   
 //Compose project payload object
   const project= () =>
@@ -106,8 +105,6 @@ export default function ProjectForm(props:Props) {
 
 // Wait till customers arrived
 if(!customers) return(<p>Lade...</p>)
-
-console.log("LostComment ", projLostComment)
 
 // **************** Functions ****************
 /**

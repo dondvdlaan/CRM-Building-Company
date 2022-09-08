@@ -46,7 +46,6 @@ for(let project of projects){
 // **************** Event Handlers ****************
 const onProject: GridEventListener<'rowClick'> = (params ) => {
   
-  console.log("Howdo?", params.id)
   navigate(`/projectDetails/${params.id}`)
 
 }

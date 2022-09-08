@@ -21,9 +21,8 @@ const params = useParams();
 const [project] = useDBApi<RawProjectWCustomer>("GET",`project/${params.id}`);
 const navigate = useNavigate();
 
+// Wait till project arrived
 if(!project) return(<p>Lade..</p>);
-
-console.log("project ", project)
 
 // *********** Event Listeners ***********
 const onDelete = () =>{
@@ -33,7 +32,7 @@ simplifiedDBApi("DELETE",`project/${params.id}`)
 .then(()=>navigate("/allProjects"))
 }
 
-    return(
+return(
 <>
     {/* Navigation bar */}
     <ButtonAppBar currentPage="Project Details" />
@@ -41,13 +40,8 @@ simplifiedDBApi("DELETE",`project/${params.id}`)
     <Box
       sx={{
         display: 'flex',
-        flexWrap: 'wrap',
-        // '& > :not(style)': {
-        //   m: 1,
-        //   width: '48%',
-        //   height: 350
-        // },
-      }}
+        flexWrap: 'wrap'
+        }}
     >
       {/* Project */}
       <Paper elevation={5} sx={{width: '60%'}} >
@@ -86,9 +80,7 @@ simplifiedDBApi("DELETE",`project/${params.id}`)
         <Typography variant="body1" ml={2} >Customer since: {project.customer.custRegistrationDate.slice(0,10)}</Typography>
       
       </Paper>
- 
-
-     </Box>
+    </Box>
 </>
     )
 }

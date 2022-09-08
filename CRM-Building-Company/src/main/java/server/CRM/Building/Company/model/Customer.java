@@ -1,9 +1,11 @@
 package server.CRM.Building.Company.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity // This tells JPA/Hibernate to make a table out of this class
 public class Customer {
@@ -22,6 +24,11 @@ public class Customer {
     private String custCountry;
     @CreationTimestamp
     private Timestamp custRegistrationDate;
+
+    //W mappedBy we create bidirectional relationship
+    @OneToMany(mappedBy = "customer",  orphanRemoval = false, fetch=FetchType.LAZY)
+    @JsonIgnore
+    private List<Project> project;
 
 
     // region 1 Constructors
@@ -136,6 +143,14 @@ public class Customer {
 
     public void setCustRegistrationDate(Timestamp custRegistrationDate) {
         this.custRegistrationDate = custRegistrationDate;
+    }
+
+    public List<Project> getProject() {
+        return project;
+    }
+
+    public void setProject(List<Project> project) {
+        this.project = project;
     }
     // region 3 toString
 

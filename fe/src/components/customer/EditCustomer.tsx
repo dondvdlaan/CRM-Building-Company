@@ -14,9 +14,8 @@ export const EditCustomer = (): ReactElement =>{
 const params = useParams<{ id: string }>();
 const [customer] = useDBApi<Customer>("GET",`customer/${params.id}`)
 
+// Wiaz till customer arruves
 if(customer === undefined || customer=== null) return(<p>Lade..</p>);
-
-console.log("Edit Customer",customer);
 
 return(
 <CustomerForm

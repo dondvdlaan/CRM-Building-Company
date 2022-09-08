@@ -54,7 +54,7 @@ export default function CustomerForm(props:Props) {
   //Minimum requirements for email input field
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
   
-//Compose customer payload object
+  //Compose customer payload object
   const customer = () =>
     ({
       custFirstName,

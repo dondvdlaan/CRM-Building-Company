@@ -17,16 +17,6 @@ import server.CRM.Building.Company.repository.ProjectRepository;
 @RestController
 public class ProjectController {
 
-    // Testing
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
-    @GetMapping("/greeting1")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
-    }
-    // End Testing
-
     // ------------- Constants -------------
     @Autowired // This means to get the bean called customerRepository
     private CustomerRepository customerRepository;
@@ -39,13 +29,13 @@ public class ProjectController {
 
     // ------------- Routes -------------
     // Show all projects
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible form REACT
+    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @GetMapping("/allProjects")
-    public @ResponseBody Iterable getAllProjects(){
+    public @ResponseBody List<Project>getAllProjects(){
 
         System.out.println("allProjects");
         List<Project> projects = new ArrayList<>();
-        projects = projectRepository.findAll();
+        projectRepository.findAll().forEach(projects::add);
         projects.toString();
 
         return projects;
@@ -65,20 +55,16 @@ public class ProjectController {
     @PostMapping("/customer/{custID}/project")
     public void addProject(@PathVariable Integer custID, @RequestBody Project project){
 
-        Optional<Customer>customer = customerRepository.findById(custID);
-        Customer temp = new Customer();
-        if(customer.isPresent()){
-             temp = customer.get();
-        }
-
-
-        project.setCustomer(temp);
-        System.out.println("CustID " + custID);
-        System.out.println("temp " + temp.toString());
-        System.out.println(customer.toString());
-        System.out.println(project.toString());
-
         System.out.println("addProject");
+        //Optional<Customer>customer = customerRepository.findById(custID);
+
+        customerRepository.findById(custID).ifPresent(customer->{
+            //customer.setProject(project);
+            project.setCustomer(customer);
+        });
+
+        System.out.println("CustID " + custID);
+        System.out.println(project.toString());
 
         projectRepository.save(project);
     }
@@ -100,8 +86,6 @@ public class ProjectController {
         System.out.println("temp " + temp.toString());
         System.out.println(customer.toString());
         System.out.println(project.toString());
-
-
 
         projectRepository.save(project);
     }

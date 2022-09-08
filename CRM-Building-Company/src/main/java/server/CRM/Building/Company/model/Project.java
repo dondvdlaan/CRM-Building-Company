@@ -23,9 +23,9 @@ public class Project {
     private String projCity;
     private String projCountry;
 
-    // A customer can be assigned to only 1 project
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn( name = "custid" )
+    // A customer can be assigned to more projects. FK here at project
+    @ManyToOne()
+    @JoinColumn(name = "custID")
     private Customer customer;
 
     // region 1 Constructors
