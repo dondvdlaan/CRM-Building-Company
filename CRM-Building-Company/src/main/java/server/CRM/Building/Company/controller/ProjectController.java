@@ -15,34 +15,33 @@ import server.CRM.Building.Company.repository.ProductRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
 
 @RestController
+@CrossOrigin
 public class ProjectController {
 
     // ------------- Constants -------------
-    @Autowired // This means to get the bean called customerRepository
+    @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired // This means to get the bean called projectRepository
+    @Autowired
     private ProjectRepository projectRepository;
 
-    @Autowired // This means to get the bean called productRepository
+    @Autowired
     private ProductRepository productRepository;
 
     // ------------- Routes -------------
     // Show all projects
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @GetMapping("/allProjects")
-    public @ResponseBody List<Project>getAllProjects(){
+    public  List<Project> getAllProjects(){
 
-        System.out.println("allProjects");
+        System.out.println("Route: allProjects");
         List<Project> projects = new ArrayList<>();
         projectRepository.findAll().forEach(projects::add);
-        projects.toString();
+        //projects.toString();
 
         return projects;
     }
 
     // Get project
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @GetMapping("/project/{id}")
     public Project getProject(@PathVariable Integer id){
 
@@ -51,7 +50,6 @@ public class ProjectController {
         return project.get();
     }
     // Add Project
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @PostMapping("/customer/{custID}/project")
     public void addProject(@PathVariable Integer custID, @RequestBody Project project){
 
@@ -69,7 +67,6 @@ public class ProjectController {
         projectRepository.save(project);
     }
     // Update Project
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @PutMapping("/customer/{custID}/project")
     public void updateProject(@PathVariable Integer custID, @RequestBody Project project){
 
@@ -90,7 +87,6 @@ public class ProjectController {
         projectRepository.save(project);
     }
     // Delete project
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @DeleteMapping("/project/{id}")
     public void deleteProject(@PathVariable Integer id){
 

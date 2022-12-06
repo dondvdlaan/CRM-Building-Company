@@ -61,3 +61,20 @@ export const simplifiedDBApi =
   return axios(config)
 }
 
+type A = (null | string);
+
+export function useStorageApi(userData: string){
+
+  const [auth, setAuth] = useState<A>(null);
+
+  useEffect(()=>{
+
+    let token = localStorage.getItem(userData);
+
+    if (token) setAuth(token);
+    
+  },[userData]);
+
+  return auth;
+}
+

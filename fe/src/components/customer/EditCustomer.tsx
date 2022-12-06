@@ -1,6 +1,6 @@
 import { ReactElement } from "react"
 import { useParams } from "react-router-dom";
-import { dbApi, useDBApi } from "../../shared/DBApi";
+import { dbApi, useDBApi } from "../../shared/Api";
 import { Customer, CustomerWORegDate } from "../../types/Customer";
 import CustomerForm from "./CustomerForm"
 

@@ -2,7 +2,7 @@ import { ReactElement } from "react"
 import { useParams } from "react-router-dom";
 import ProjectForm from "./ProjectForm"
 import { Project, RawProjectWCustomer } from '../../types/Project';
-import { useDBApi } from "../../shared/DBApi";
+import { useDBApi } from "../../shared/Api";
 
 
 

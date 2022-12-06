@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu       from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import BasicMenu from './BasicMenu';
+import { useState } from 'react';
 
 interface Props{
   currentPage: string
@@ -18,17 +19,9 @@ interface Props{
  */
 export default function ButtonAppBar(props:Props) {
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  // *** Constants and variables ***
 
-  // ********* Eventhandlers
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // *** Eventhandlers ***
   
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -38,10 +31,10 @@ export default function ButtonAppBar(props:Props) {
           <BasicMenu />
           
           <Typography 
-          variant   ="h6" 
-          component ="div" 
-          sx        ={{ flexGrow: 1 }}
-          className = "title"
+            variant   ="h6" 
+            component ="div" 
+            sx        ={{ flexGrow: 1 }}
+            className = "title"
           >
             {props.currentPage}
           </Typography>

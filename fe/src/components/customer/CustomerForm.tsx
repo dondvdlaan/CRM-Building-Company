@@ -12,7 +12,7 @@ import {
   ThemeProvider
 } from '@mui/material/styles';
 import { Customer, CustomerWORegDate } from '../../types/Customer';
-import { simplifiedDBApi } from '../../shared/DBApi';
+import { simplifiedDBApi } from '../../shared/Api';
 import { Method } from "axios";
 
 interface Props extends Customer{
@@ -128,9 +128,7 @@ const checkFormInputs = (): boolean =>{
   return (
     <>
       {/* Navigation Bar */}
-      <ThemeProvider theme={theme}>
-        <ButtonAppBar currentPage={props.currentPage}/>
-      </ThemeProvider>
+      <ButtonAppBar currentPage={props.currentPage}/>
 
       {/* Customer Form */}
       <Box

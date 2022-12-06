@@ -1,11 +1,10 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react';
 
 
 /**
@@ -14,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 export default function BasicMenu() {
 
   // ********* Constants and variables ********* 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open                    = Boolean(anchorEl);
   let navigate                  = useNavigate();
 
@@ -27,22 +26,6 @@ export default function BasicMenu() {
     setAnchorEl(null);
   }; 
   
-  const onProjects = () => {
-    navigate("/allProjects");
-  };
-  const onAddProject = () => {
-    navigate("/addProject");
-  };
-  const onCustomers = () => {
-    navigate("/allCustomers");
-  };
-  const onAddCustomer = () => {
-    navigate("/addCustomer");
-  };
-  const onReferences = () => {
-    navigate("/allReferences");
-  };
-
   return (
     <div>
       <IconButton
@@ -63,11 +46,11 @@ export default function BasicMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={onProjects}>Projects</MenuItem>
-        <MenuItem onClick={onAddProject}>Add Project</MenuItem>
-        <MenuItem onClick={onCustomers}>Customers</MenuItem>
-        <MenuItem onClick={onAddCustomer}>Add Customer</MenuItem>
-        <MenuItem onClick={onReferences}>References</MenuItem>
+        <MenuItem onClick={() => navigate("/allProjects")}>Projects</MenuItem>
+        <MenuItem onClick={() => navigate("/addProject")}>Add Project</MenuItem>
+        <MenuItem onClick={() => navigate("/allCustomers")}>Customers</MenuItem>
+        <MenuItem onClick={() => navigate("/addCustomer")}>Add Customer</MenuItem>
+        <MenuItem onClick={() => navigate("/allReferences")}>References</MenuItem>
       </Menu>
     </div>
   );

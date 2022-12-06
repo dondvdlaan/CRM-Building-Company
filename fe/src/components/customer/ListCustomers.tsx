@@ -1,5 +1,5 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import {dbApi, simplifiedDBApi, useDBApi } from "../../shared/DBApi";
+import {dbApi, simplifiedDBApi, useDBApi } from "../../shared/Api";
 import { useTheme,  
         createTheme, 
         ThemeProvider,
@@ -13,6 +13,8 @@ import {Table,
         TableRow
       } from '@mui/material';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Typography } from "@mui/material";
@@ -57,9 +59,7 @@ const onDel = (e: React.FormEvent,row:Customer)=>{
 return(
 <>
     {/* Navigation Bar */}
-  <ThemeProvider theme={theme}>
-
-        <ButtonAppBar currentPage="Customers" />
+    <ButtonAppBar currentPage="Customers" />
 
     {/* Table of Customers */}
     <TableContainer component={Paper}>
@@ -82,9 +82,7 @@ return(
               sx={{'&:hover': { backgroundColor: 'grey' }}}
             > 
               <TableCell component="th" scope="row">
-                <ThemeProvider theme={theme}>
                   <Typography variant="body2">{row.custFirstName}</Typography>
-                </ThemeProvider>
               </TableCell>
               <TableCell align="left">
                 <Typography variant="body2">{row.custLastName}</Typography>
@@ -108,8 +106,17 @@ return(
               </TableCell>
               <TableCell align="center">
                 <Typography variant="body2">
-                  <Button variant="text" onClick={(e)=>onEdit(e,row)}>Edit</Button>
-                  <Button variant="text" onClick={(e)=>onDel(e,row)}>Del</Button>
+                  <Button 
+                  variant="text" 
+                  startIcon={<EditIcon />}
+                  onClick={(e)=>onEdit(e,row)}
+                  ></Button>
+                  
+                  <Button 
+                  variant="text" 
+                  startIcon={<DeleteIcon />}
+                  onClick={(e)=>onDel(e,row)}
+                  ></Button>
                 </Typography>
               </TableCell>
             </TableRow>
@@ -117,7 +124,6 @@ return(
         </TableBody>
       </Table>
     </TableContainer>
-  </ThemeProvider>
 </>
 )
 }

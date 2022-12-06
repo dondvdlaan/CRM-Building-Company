@@ -1,6 +1,6 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import {useParams,Link, useNavigate} from "react-router-dom";
-import { simplifiedDBApi, useDBApi } from "../../shared/DBApi";
+import { simplifiedDBApi, useDBApi } from "../../shared/Api";
 import { Project, ProjectWCustomer, RawProjectWCustomer } from "../../types/Project";
 import * as React from 'react';
 import Box from '@mui/material/Box';

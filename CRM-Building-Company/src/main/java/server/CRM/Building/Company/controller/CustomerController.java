@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
+@CrossOrigin
 public class CustomerController {
 
     // Testing
@@ -39,7 +40,6 @@ public class CustomerController {
 
     // ------------- Routes -------------
     // Show all customers
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @RequestMapping("/allCustomers")
     public @ResponseBody Iterable getAllCustomers(){
 
@@ -47,7 +47,6 @@ public class CustomerController {
         return customerRepository.findAll();
     }
     // Get customer
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable Integer id){
 
@@ -56,7 +55,6 @@ public class CustomerController {
         return customer.get();
     }
     // Delete customer
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @DeleteMapping("/customer/{id}")
     public void deleteCustomer(@PathVariable Integer id){
 
@@ -64,7 +62,6 @@ public class CustomerController {
         customerRepository.deleteById(id);
     }
     // Update customer
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @PutMapping("/customer/{id}")
     public void updateCustomer(@RequestBody Customer customer, @PathVariable Integer id){
 
@@ -77,7 +74,6 @@ public class CustomerController {
         customerRepository.save(updatedCustomer);
     }
     // Add Customer
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @PostMapping("/customer")
     public void addCustomer(@RequestBody Customer customer){
 
@@ -87,7 +83,6 @@ public class CustomerController {
 
     // Testing
     // Show customer by lastname
-    @CrossOrigin(origins = "http://localhost:3000")  // Only accessible from REACT
     @RequestMapping("/custLastName")
     public @ResponseBody Iterable getLastName(@RequestParam(value = "name", defaultValue = "World") String name){
 

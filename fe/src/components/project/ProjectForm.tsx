@@ -28,7 +28,7 @@ import {
   useTheme,
   ThemeProvider
 } from '@mui/material/styles';
-import { simplifiedDBApi, useDBApi } from '../../shared/DBApi';
+import { simplifiedDBApi, useDBApi } from '../../shared/Api';
 import { Method } from "axios";
 import { Project, ProjectWCustomer, RawProjectWCustomer } from '../../types/Project';
 import { Customer } from '../../types/Customer';
@@ -50,6 +50,7 @@ export default function ProjectForm(props:Props) {
   // **************** Constants and variables **************** 
   // Retrieve customers from DB for pop-up window
   const [customers] = useDBApi<Customer[]>("GET","allCustomers")
+  
   
   // Form Input fields
   const [projTitle, setProjTitle] = useState(props.projTitle);
@@ -74,15 +75,18 @@ export default function ProjectForm(props:Props) {
   const [errorDesc, setErrorDesc]   = useState(false);
   
   // Project Closed Lost comments
-  const [openProjLost, setOpenProjLost] = useState(true);
+  const [openProjLost, setOpenProjLost]       = useState<boolean>(true);
   const [projLostComment, setProjLostComment] = useState(props.projLostComment);
- 
+  
   // Error messages
   const errMessageTitle    = "Please fill in Title and Description";
-
+  
   const theme = useTheme();
   const navigate = useNavigate();
   
+  // Wait till customers arrived (after last hook)
+  if(!customers) return(<p>Loading customers...</p>)
+
 //Compose project payload object
   const project= () =>
     ({
@@ -103,8 +107,6 @@ export default function ProjectForm(props:Props) {
       projCountry,
     })
 
-// Wait till customers arrived
-if(!customers) return(<p>Lade...</p>)
 
 // **************** Functions ****************
 /**
@@ -128,12 +130,23 @@ const checkFormInputs = (): boolean =>{
 }
 
 // **************** Event handlers ****************
+const onProjStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  let status = e.target.value;
+  setProjStatus(e.target.value)
+
+  if (status === 'Closed Lost') setOpenProjLost(true);
+  else {
+    setOpenProjLost(false);
+    setProjLostComment("");
+  }
+}
+
 const onProjLostOpen = () => {
-  setOpenProjLost(true);
+  // setOpenProjLost(true);
 };
 
 const onProjLostClose = () => {
-  setOpenProjLost(false);
+  // setOpenProjLost(false);
 };
 
 const handleCustomer = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,8 +156,11 @@ const handleCustomer = (event: React.ChangeEvent<HTMLInputElement>) => {
 const onHandleProject = (e: React.FormEvent) => {
 
   if(checkFormInputs() ){
-
-    //Prepare message and send to DB
+	
+    /**
+    * Prepare message and send to DB. Project is stored with customer ID, 1-to-many, 
+    * customer can have many projects
+    */
     const [method, path]: [Method, string] = props.isEdit?
     ["PUT", `customer/${custID}/project`]:
     ["POST", `customer/${custID}/project`];
@@ -251,6 +267,7 @@ const onHandleProject = (e: React.FormEvent) => {
               </NativeSelect>
             </FormControl>
           </Grid>
+          
           <Grid item xs={1}>
             <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">Building land available?</FormLabel>
@@ -266,6 +283,7 @@ const onHandleProject = (e: React.FormEvent) => {
             </RadioGroup>
             </FormControl>
           </Grid>
+          
           <Grid item xs={1}>
             <TextField
               value={projNote}
@@ -308,7 +326,7 @@ const onHandleProject = (e: React.FormEvent) => {
                 id: 'uncontrolled-native',
               }}
               sx={{ml: 2, p:2, width: '20ch'}}
-              onChange={(e) => setProjStatus(e.target.value)}
+              onChange={(e) => onProjStatus(e)}
               >
                 {props.isEdit ? 
                 <option >{projStatus}</option>
@@ -322,32 +340,16 @@ const onHandleProject = (e: React.FormEvent) => {
             </FormControl>
           </Grid>
           <Grid item xs={1}>
-            {projStatus === "Closed Lost"?
-              <Dialog open={openProjLost} onClose={onProjLostClose}>
-              <DialogTitle>Closed Lost Reason</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Please enter reason for losing this project.
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  value={projLostComment}
-                  onChange={(e) => setProjLostComment(e.target.value)}
-                  margin="dense"
-                  id="name"
-                  label="Project Lost Reason"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={onProjLostClose}>Cancel</Button>
-                <Button onClick={onProjLostClose}>Save</Button>
-              </DialogActions>
-            </Dialog> 
+            {(projStatus === "Closed Lost" )?
+               
+              <TextField
+                value={projLostComment}
+                onChange={(e) => setProjLostComment(e.target.value)}
+                required={false}
+                label="Project Lost Reason"
+              />
               :
-              <span>OK</span>  
+              <span></span>
             }
 
           </Grid>

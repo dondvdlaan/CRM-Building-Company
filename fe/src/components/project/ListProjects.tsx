@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridEventListener, GridValueGetterParams } from '@mui/x-data-grid';
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import { useDBApi } from '../../shared/DBApi';
+import { useDBApi } from '../../shared/Api';
 import { Project, RawProjectWCustomer } from '../../types/Project';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,8 +52,10 @@ const onProject: GridEventListener<'rowClick'> = (params ) => {
 
 return(
 <>
+    {/* Navigation Bar */}
     <ButtonAppBar currentPage="Projects" />
 
+    {/* Projects table */}
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         getRowId={(project) => project.projID}
