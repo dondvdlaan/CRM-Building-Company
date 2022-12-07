@@ -9,5 +9,5 @@ Summary:
 - Back-end  : JAVA/Spring
 - Database  : MySQL
 - Front-end : REACT
-- CSS       : Materl UI
+- CSS       : Material UI
  

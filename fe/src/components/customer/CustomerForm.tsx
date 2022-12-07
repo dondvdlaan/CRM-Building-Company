@@ -12,8 +12,9 @@ import {
   ThemeProvider
 } from '@mui/material/styles';
 import { Customer, CustomerWORegDate } from '../../types/Customer';
-import { simplifiedDBApi } from '../../shared/Api';
+import { simplifiedDBApi, useStorageApi } from '../../shared/Api';
 import { Method } from "axios";
+import LogIn from '../login/LogIn';
 
 interface Props extends Customer{
   isEdit: boolean;
@@ -50,6 +51,11 @@ export default function CustomerForm(props:Props) {
 
   const theme = useTheme();
   const navigate = useNavigate();
+
+  // Check if user is logged in
+  const auth = useStorageApi("userToken");
+  
+  if(!auth) return <LogIn />;
   
   //Minimum requirements for email input field
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 

@@ -1,4 +1,6 @@
+import { useStorageApi } from "../../shared/Api";
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
+import LogIn from "../login/LogIn";
 
 
 /**
@@ -6,6 +8,12 @@ import ButtonAppBar from "../../uiElements/ButtonAppBar"
  */
 export const ListReferences = () =>{
 
+  // *** Constants and variables ***  
+  // Check if user is logged in
+  const auth = useStorageApi("userToken");
+  
+  if(!auth) return <LogIn />;
+  
     return(
         <>
         

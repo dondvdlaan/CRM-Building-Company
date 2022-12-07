@@ -29,6 +29,14 @@ public class User {
         this.userEmail = userEmail;
         this.userPW = userPW;
     }
+
+    public User(String userFirstName, String userLastName, String userEmail, String userPW) {
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userEmail = userEmail;
+        this.userPW = userPW;
+    }
+
     // region 2 Getters and Setters
     public Integer getUserID() {
         return userID;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright';
+import { simplifiedDBApi } from '../../shared/Api';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -22,13 +24,34 @@ const theme = createTheme();
  */
 export default function LogIn() {
 
+  // *** Constants and variables ***
+  const [errorMssg, setErrorMssg] = useState<String>("No error");
+  const navigate = useNavigate();
+
   // *** Event handlers ***
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    
+    const userData = {
+      userEmail: data.get('email'),
+      userPW: data.get('password'),
+    }
+    console.log(userData);
+
+    simplifiedDBApi("POST", "user/logIn", userData )
+    .then((res: any)=>{
+      
+      console.log("res: ", res.data)
+
+      if(res.data){
+        localStorage.setItem("userToken", "OK")
+        navigate("/");
+      } 
+      else{
+        localStorage.removeItem("userToken");
+        setErrorMssg("Log in data erroneous")
+      } 
     });
   };
 
@@ -84,11 +107,11 @@ export default function LogIn() {
               Log In
             </Button>
             <Grid container>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
+              <Grid item xs>
+                <Box display="flex" justifyContent="center">
+                  {errorMssg}
+                </Box>
+              </Grid>
               {/* <Grid item>
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}

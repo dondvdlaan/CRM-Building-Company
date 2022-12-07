@@ -63,17 +63,17 @@ export const simplifiedDBApi =
 
 type A = (null | string);
 
-export function useStorageApi(userData: string){
+export function useStorageApi(userToken: string){
 
   const [auth, setAuth] = useState<A>(null);
 
   useEffect(()=>{
 
-    let token = localStorage.getItem(userData);
+    let token = localStorage.getItem(userToken);
 
     if (token) setAuth(token);
     
-  },[userData]);
+  },[userToken]);
 
   return auth;
 }

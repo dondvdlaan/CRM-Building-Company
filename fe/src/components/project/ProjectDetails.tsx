@@ -1,6 +1,6 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import {useParams,Link, useNavigate} from "react-router-dom";
-import { simplifiedDBApi, useDBApi } from "../../shared/Api";
+import { simplifiedDBApi, useDBApi, useStorageApi } from "../../shared/Api";
 import { Project, ProjectWCustomer, RawProjectWCustomer } from "../../types/Project";
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -9,6 +9,7 @@ import Typography  from "@mui/material/Typography";
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import css from "./ProjectDetails.module.css"
+import LogIn from "../login/LogIn";
 
 
 /**
@@ -17,12 +18,16 @@ import css from "./ProjectDetails.module.css"
 export const ProjectDetails = () =>{
 
 // *********** Constants and variables ***********
-const params = useParams();
+const params    = useParams();
 const [project] = useDBApi<RawProjectWCustomer>("GET",`project/${params.id}`);
-const navigate = useNavigate();
+const navigate  = useNavigate();
+// Check if user is logged in
+const auth = useStorageApi("userToken");
+  
+if(!auth) return <LogIn />;
 
 // Wait till project arrived
-if(!project) return(<p>Lade..</p>);
+if(!project) return(<p>Loadind Details..</p>);
 
 // *********** Event Listeners ***********
 const onDelete = () =>{

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridEventListener, GridValueGetterParams } from '@mui/x-data-grid';
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import { useDBApi } from '../../shared/Api';
+import { useDBApi, useStorageApi } from '../../shared/Api';
 import { Project, RawProjectWCustomer } from '../../types/Project';
 import { useNavigate } from 'react-router-dom';
+import LogIn from '../login/LogIn';
 
 // Definition table headers and fields
 const columns: GridColDef[] = [
@@ -23,9 +24,13 @@ export const ListProjects = () =>{
 // **************** Constants and variables ****************
 const [projects ]   = useDBApi<RawProjectWCustomer[]>('GET','allProjects')
 const navigate      = useNavigate();
-
+// Check if user is logged in
+const auth          = useStorageApi("userToken");
+  
+ if(!auth) return <LogIn />;
+ 
 // Wait till projects arrived
-if(!projects) return(<p>Lade..</p>);
+if(!projects) return(<p>Loading Projects..</p>);
 
 // Convert projects for Datagrid table
 let temp = {};

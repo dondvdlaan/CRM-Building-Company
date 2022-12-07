@@ -1,5 +1,5 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import {dbApi, simplifiedDBApi, useDBApi } from "../../shared/Api";
+import {dbApi, simplifiedDBApi, useDBApi, useStorageApi } from "../../shared/Api";
 import { useTheme,  
         createTheme, 
         ThemeProvider,
@@ -20,6 +20,7 @@ import Grid from '@mui/material/Grid';
 import { Typography } from "@mui/material";
 import { Customer, CustomerWORegDate } from "../../types/Customer";
 import { useNavigate } from "react-router-dom";
+import LogIn from "../login/LogIn";
 
 /**
  * Component to list all customers
@@ -27,12 +28,17 @@ import { useNavigate } from "react-router-dom";
 export const ListCustomers = () =>{
 
 // **************** Constants and variables ****************
-const [rows ]   = useDBApi<Customer[]>('GET','allCustomers')
-const theme     = useTheme();
-const navigate  = useNavigate();
-
+const [customers ]   = useDBApi<Customer[]>('GET','allCustomers')
+const theme          = useTheme();
+const navigate       = useNavigate();
+ 
+// Check if user is logged in
+const auth           = useStorageApi("userToken");
+  
+if(!auth) return <LogIn />;
+ 
 // Wait till rows are there
-if(!rows) return(<p>Lade..</p>);
+if(!customers) return(<p>Loading customers..</p>);
 
 // Error messages
 const errMessageDelete  = "Can not delete customer,\n because a project still exists.";
@@ -75,33 +81,33 @@ return(
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row:Customer) => (
+          {customers.map((customer:Customer) => (
             <TableRow
-              key={row.custID}
+              key={customer.custID}
               // sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
               sx={{'&:hover': { backgroundColor: 'grey' }}}
             > 
               <TableCell component="th" scope="row">
-                  <Typography variant="body2">{row.custFirstName}</Typography>
+                <Typography variant="body2">{customer.custFirstName}</Typography>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="body2">{row.custLastName}</Typography>
+                <Typography variant="body2">{customer.custLastName}</Typography>
               </TableCell>
               <TableCell align="left">
                 <Grid>
-                    <Typography variant="body2">E: {row.custEmail}</Typography>
-                    <Typography variant="body2">T: {row.custTel} </Typography>
+                    <Typography variant="body2">E: {customer.custEmail}</Typography>
+                    <Typography variant="body2">T: {customer.custTel} </Typography>
                 </Grid>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="body2">{row.custStreet} {row.custHouseNumber}</Typography>
-                <Typography variant="body2">{row.custZipCode}</Typography>
-                <Typography variant="body2">{row.custCity}</Typography>
-                <Typography variant="body2">{row.custCountry}</Typography>
+                <Typography variant="body2">{customer.custStreet} {customer.custHouseNumber}</Typography>
+                <Typography variant="body2">{customer.custZipCode}</Typography>
+                <Typography variant="body2">{customer.custCity}</Typography>
+                <Typography variant="body2">{customer.custCountry}</Typography>
               </TableCell>
               <TableCell >
                 <Typography variant="body2">
-                  {row.custRegistrationDate.slice(0,10)}
+                  {customer.custRegistrationDate.slice(0,10)}
                 </Typography>
               </TableCell>
               <TableCell align="center">
@@ -109,13 +115,13 @@ return(
                   <Button 
                   variant="text" 
                   startIcon={<EditIcon />}
-                  onClick={(e)=>onEdit(e,row)}
+                  onClick={(e)=>onEdit(e,customer)}
                   ></Button>
                   
                   <Button 
                   variant="text" 
                   startIcon={<DeleteIcon />}
-                  onClick={(e)=>onDel(e,row)}
+                  onClick={(e)=>onDel(e,customer)}
                   ></Button>
                 </Typography>
               </TableCell>

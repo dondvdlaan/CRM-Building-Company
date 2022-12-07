@@ -10,7 +10,9 @@ import LogIn from "./login/LogIn";
 export const Summary = () =>{
 
     // *** Constants and variables ***
-    const auth = useStorageApi("userData");
+    const auth = useStorageApi("userToken");
+
+    console.log("auth: ", auth);
 
     if(!auth) return <LogIn />;
 
