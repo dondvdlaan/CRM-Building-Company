@@ -1,33 +1,30 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import {useParams,Link, useNavigate} from "react-router-dom";
+import {useParams,useNavigate} from "react-router-dom";
 import { simplifiedDBApi, useDBApi, useStorageApi } from "../../shared/Api";
-import { Project, ProjectWCustomer, RawProjectWCustomer } from "../../types/Project";
-import * as React from 'react';
-import Box from '@mui/material/Box';
+import { RawProjectWCustomer } from "../../types/Project";
 import Paper from '@mui/material/Paper';
 import Typography  from "@mui/material/Typography";
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import css from "./ProjectDetails.module.css"
 import LogIn from "../login/LogIn";
-
+import { Grid, Link } from "@mui/material";
 
 /**
- * Main Component to display Project Details
+ * Component to display Project Details
  */
 export const ProjectDetails = () =>{
 
 // *********** Constants and variables ***********
+const auth      = useStorageApi("userToken");
 const params    = useParams();
 const [project] = useDBApi<RawProjectWCustomer>("GET",`project/${params.id}`);
 const navigate  = useNavigate();
-// Check if user is logged in
-const auth = useStorageApi("userToken");
-  
-if(!auth) return <LogIn />;
 
 // Wait till project arrived
-if(!project) return(<p>Loadind Details..</p>);
+if(!project) return(<p>Loading Details..</p>);
+
+// Check if user is logged in
+if(!auth) return <LogIn />;
+
 
 // *********** Event Listeners ***********
 const onDelete = () =>{
@@ -42,50 +39,115 @@ return(
     {/* Navigation bar */}
     <ButtonAppBar currentPage="Project Details" />
 
-    <Box
-      sx={{
-        display: 'flex',
-        flexWrap: 'wrap'
-        }}
-    >
+   <Grid container spacing={2}>
+    <Grid item xs={8}>
+    
       {/* Project */}
-      <Paper elevation={5} sx={{width: '60%'}} >
-        <Typography variant="h4" align='center'>{project.projTitle}</Typography>
-        <Typography variant="body1" ml={2} >Description: {project.projDesc}</Typography>
-        <Typography variant="body1" ml={2} >Type: {project.projType}</Typography>
-        <Typography variant="body1" ml={2} >Land available: {project.projLand}</Typography>
-        <Typography variant="body1" ml={2} >Note: {project.projNote}</Typography>
-        <Typography variant="body1" ml={2} >Netto surface m^2: {project.projSurface}</Typography>
-        <Typography variant="body1" ml={2} >Project start: {project.projStart.slice(0,10)}</Typography>
-        <Typography variant="body1" ml={2} >Street: {project.projStreet}</Typography>
-        <Typography variant="body1" ml={2} >House number: {project.projHouseNumber}</Typography>
-        <Typography variant="body1" ml={2} >Zip code: {project.projZipCode}</Typography>
-        <Typography variant="body1" ml={2} >City: {project.projCity}</Typography>
-        <Typography variant="body1" ml={2} >Country: {project.projCountry}</Typography>
+      <Paper elevation={5} sx={{mt:1}}  >
+        <Typography variant="h5" align='center'>{project.projTitle}</Typography>
+        <Grid container spacing={0} sx={{mt:1}} >
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Description:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projDesc}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Type: </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} > {project.projType}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Land available:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projLand}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Note:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projNote}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Netto surface m<sup>2</sup>:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projSurface}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Project start:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projStart.slice(0,10)}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Street:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projStreet}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >House number:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projHouseNumber}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Zip code:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projZipCode}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >City:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projCity}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body1" ml={2} >Country:</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="body1" ml={2} >{project.projCountry}</Typography>
+          </Grid>
+        </Grid>
       
-        <Typography align='center'>
+        <Typography align='center' sx={{mt:1}}>
           <Button
             variant="outlined" 
             color="warning"
             onClick={onDelete}
           >Delete</Button>
           
-          <Button variant="outlined"
+          <Button 
+            variant="outlined"
             onClick={()=>navigate(`/editProject/${params.id}`)}
           >Edit</Button>
         </Typography>
       </Paper>
-   
-      {/* Customer */}
-      <Paper elevation={5} sx={{width: '40%'}}>
-        <Typography variant="h6" mb={2} ml={2}>Customer</Typography>
-        <Typography variant="body1" ml={2} >Name: {project.customer.custFirstName} {project.customer.custLastName}</Typography>
-        <Typography variant="body1" ml={2} >Tel: {project.customer.custTel}</Typography>
-        <Typography variant="body1" ml={2} >Email: {project.customer.custEmail}</Typography>
-        <Typography variant="body1" ml={2} >Customer since: {project.customer.custRegistrationDate.slice(0,10)}</Typography>
-      
-      </Paper>
-    </Box>
+    </Grid>
+
+    <Grid item xs={4}>
+        {/* Customer */}
+      <Link href={`/editCustomer/${project.customer.custID}`}> 
+        <Paper elevation={5} sx={{mt:1}} >
+          <Typography variant="h6" mb={2} ml={2}>Customer</Typography>
+          <Typography variant="body1" ml={2} >Name: {project.customer.custFirstName} {project.customer.custLastName}</Typography>
+          <Typography variant="body1" ml={2} >Tel: {project.customer.custTel}</Typography>
+          <Typography variant="body1" ml={2} >Email: {project.customer.custEmail}</Typography>
+          <Typography variant="body1" ml={2} >Customer since: {project.customer.custRegistrationDate.slice(0,10)}</Typography>
+        </Paper>
+      </Link>   
+
+        <Paper elevation={5} sx={{mt:2}}>
+          <Typography variant="h6" mb={2} ml={2}>Project Status</Typography>
+          <Typography variant="body1" ml={2} >Status: {project.projStatus}</Typography>
+        
+        </Paper>
+    </Grid>
+  </Grid>
 </>
     )
 }

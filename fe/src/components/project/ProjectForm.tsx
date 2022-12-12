@@ -5,37 +5,25 @@ import {
   Button,
   FormControl,
   InputLabel,
-  Select,
   NativeSelect,
   FormLabel,
   RadioGroup,
   FormControlLabel,
-  Radio,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText
-} from '@mui/material'
+  Radio} from '@mui/material'
 import MenuItem from '@mui/material/MenuItem';
-import React, { SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import Autocomplete from '@mui/material/Autocomplete';
-import DialogActions from '@mui/material/DialogActions';
 
-import {
-  useTheme,
-  ThemeProvider
-} from '@mui/material/styles';
-import { simplifiedDBApi, useDBApi } from '../../shared/Api';
+import { simplifiedDBApi, useDBApi, useStorageApi } from '../../shared/Api';
 import { Method } from "axios";
-import { Project, ProjectWCustomer, RawProjectWCustomer } from '../../types/Project';
+import { ProjectWCustomer } from '../../types/Project';
 import { Customer } from '../../types/Customer';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import helper from "./Helper"
+import LogIn from '../login/LogIn';
 
 interface Props extends ProjectWCustomer{
   isEdit: boolean;
@@ -49,43 +37,52 @@ export default function ProjectForm(props:Props) {
   
   // **************** Constants and variables **************** 
   // Retrieve customers from DB for pop-up window
-  const [customers] = useDBApi<Customer[]>("GET","allCustomers")
+  const [customers]   = useDBApi<Customer[]>("GET","allCustomers")
   
+  // Get user token to check log in
+  const auth          = useStorageApi("userToken");
   
   // Form Input fields
-  const [projTitle, setProjTitle] = useState(props.projTitle);
-  const [projDesc, setProjDesc] = useState(props.projDesc);
-  const [projType, setProjType] = useState(props.projType);
-  const [projLand, setProjLand] = useState(props.projLand);
-  const [projSurface, setProjSurface] = useState(props.projSurface);
-  const [projStart, setProjStart] = useState<Dayjs | null>(dayjs(props.projStart));
-  const [projStatus, setProjStatus] = useState(props.projStatus);
-  const [projNote, setProjNote] = useState(props.projNote);
-  const [projStreet, setProjStreet] = useState(props.projStreet);
+  const [projTitle, setProjTitle]         = useState(props.projTitle);
+  const [projDesc, setProjDesc]           = useState(props.projDesc);
+  const [projType, setProjType]           = useState(props.projType);
+  const [projLand, setProjLand]           = useState(props.projLand);
+  const [projSurface, setProjSurface]     = useState(props.projSurface);
+  const [projStart, setProjStart]         = useState<Dayjs | null>(dayjs(props.projStart));
+  const [projStatus, setProjStatus]       = useState(props.projStatus);
+  const [projNote, setProjNote]           = useState(props.projNote);
+  const [projStreet, setProjStreet]       = useState(props.projStreet);
   const [projHouseNumber, setProjHouseNumber] = useState(props.projHouseNumber);
-  const [projZipCode, setProjZipCode] = useState(props.projZipCode);
-  const [projCity, setProjCity] = useState(props.projCity);
-  const [projCountry, setProjCountry] = useState(props.projCountry);
+  const [projZipCode, setProjZipCode]     = useState(props.projZipCode);
+  const [projCity, setProjCity]           = useState(props.projCity);
+  const [projCountry, setProjCountry]     = useState(props.projCountry);
   const [custFirstName, setCustFirstName] = useState(props.custFirstName);
-  const [custLastName, setCustLastName] = useState(props.custLastName);
-  const [custID, setCustID] = useState(props.custID);
+  const [custLastName, setCustLastName]   = useState(props.custLastName);
+  const [custID, setCustID]               = useState(props.custID);
   
   // Error states
-  const [errorTitle, setErrorTitle] = useState(false);
-  const [errorDesc, setErrorDesc]   = useState(false);
+  const [errorTitle, setErrorTitle]         = useState<boolean>(false);
+  const [errorDesc, setErrorDesc]           = useState<boolean>(false);
+  const [errorCustomer, setErrorCustomer]   = useState<boolean>(false);
+  const [errorRequired, setErrorRequired]   = useState<boolean>(false);
   
   // Project Closed Lost comments
   const [openProjLost, setOpenProjLost]       = useState<boolean>(true);
   const [projLostComment, setProjLostComment] = useState(props.projLostComment);
   
   // Error messages
-  const errMessageTitle    = "Please fill in Title and Description";
+  const errMessageTitle     = "Please fill in Title and Description";
+  const errMessageCustomer  = "Please select a customer";
+  const errMessageRequired  = "Your input is required";
   
-  const theme = useTheme();
   const navigate = useNavigate();
-  
+
   // Wait till customers arrived (after last hook)
   if(!customers) return(<p>Loading customers...</p>)
+  
+  // Check if user is logged in
+  if(!auth) return <LogIn />;
+  
 
 //Compose project payload object
   const project= () =>
@@ -113,9 +110,18 @@ export default function ProjectForm(props:Props) {
  * Check form user inputs before dispatch
  */
 const checkFormInputs = (): boolean =>{
-  // Variable
-  let formOK = false;
+ 
+   // Variable
+   let formCustomer = false;
+   let formTitle = false;
+   let formStatus = false;
   
+   // Check Customer
+   if(custID === "" ) setErrorCustomer(true);
+   else {
+     setErrorCustomer(false);
+     formCustomer = true;
+   } 
   // Check if Title or Description are empty, if so error
   if(projTitle === "" || projDesc === "" ){
     setErrorTitle(true)
@@ -124,15 +130,23 @@ const checkFormInputs = (): boolean =>{
   else{
     setErrorTitle(false);
     setErrorDesc(false);
-    formOK = true;
+    formTitle = true;
+    
   }
-  return formOK;
+  // Check Status
+  if(projStatus === "" ) setErrorRequired(true);
+  else {
+    setErrorRequired(false);
+    formStatus = true;
+  }
+  
+return formTitle && formStatus;
 }
 
 // **************** Event handlers ****************
 const onProjStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
   let status = e.target.value;
-  setProjStatus(e.target.value)
+  setProjStatus(status)
 
   if (status === 'Closed Lost') setOpenProjLost(true);
   else {
@@ -177,9 +191,7 @@ const onHandleProject = (e: React.FormEvent) => {
   return (
     <>
       {/* Navigation Bar */}
-      <ThemeProvider theme={theme}>
         <ButtonAppBar currentPage={props.currentPage}/>
-      </ThemeProvider>
 
       {/* project Form */}
       <Box
@@ -197,10 +209,12 @@ const onHandleProject = (e: React.FormEvent) => {
             <TextField
               id="outlined-select-currency"
               select
-              label="Select"
+              required={true}
+              label="Select customer"
               value={custID}
               onChange={handleCustomer}
-              helperText="Please select customer"
+              error={errorCustomer}
+              helperText={errorCustomer ? errMessageCustomer : ""}
               sx={{
                 ml: 2,
                 width: '20ch',
@@ -252,7 +266,7 @@ const onHandleProject = (e: React.FormEvent) => {
                 inputProps={{
                 name: 'age',
                 id: 'uncontrolled-native',
-              }}
+                }}
               sx={{ml: 2, p:2, width: '20ch'}}
               onChange={(e) => setProjType(e.target.value)}
               >
@@ -315,18 +329,22 @@ const onHandleProject = (e: React.FormEvent) => {
         </Grid>
         <Grid item xs={1}>
             <FormControl fullWidth>
-              <InputLabel variant="standard" sx={{
-                ml: 2, mt: 1}} htmlFor="uncontrolled-native">
+              <InputLabel 
+                variant="standard" 
+                sx={{ml: 2, mt: 1}} 
+                htmlFor="uncontrolled-native"
+                required={true}
+                error={errorRequired}
+                // helperText={errorTitle ? errMessageTitle : ""}
+                >
                 Project Status
               </InputLabel>
               <NativeSelect
                 variant="outlined"
                 defaultValue={projStatus}
-                inputProps={{
-                id: 'uncontrolled-native',
-              }}
-              sx={{ml: 2, p:2, width: '20ch'}}
-              onChange={(e) => onProjStatus(e)}
+                inputProps={{id: 'uncontrolled-native',}}
+                sx={{ml: 2, p:2, width: '20ch'}}
+                onChange={(e) => onProjStatus(e)}
               >
                 {props.isEdit ? 
                 <option >{projStatus}</option>

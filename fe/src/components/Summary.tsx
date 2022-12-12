@@ -1,4 +1,5 @@
-import { useStorageApi } from "../shared/Api"
+import { simplifiedDBApi, useDBApi, useStorageApi } from "../shared/Api"
+import { RawProjectWCustomer } from "../types/Project";
 import BasicMenu from "../uiElements/BasicMenu"
 import ButtonAppBar from "../uiElements/ButtonAppBar"
 import LogIn from "./login/LogIn";
@@ -13,7 +14,7 @@ export const Summary = () =>{
     const auth = useStorageApi("userToken");
 
     console.log("auth: ", auth);
-
+    
     if(!auth) return <LogIn />;
 
     

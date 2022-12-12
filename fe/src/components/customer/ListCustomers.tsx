@@ -31,14 +31,14 @@ export const ListCustomers = () =>{
 const [customers ]   = useDBApi<Customer[]>('GET','allCustomers')
 const theme          = useTheme();
 const navigate       = useNavigate();
- 
-// Check if user is logged in
 const auth           = useStorageApi("userToken");
-  
+
+// Wait till customers are there
+if(!customers) return(<p>Loading customers..</p>);
+
+// Check if user is logged in
 if(!auth) return <LogIn />;
  
-// Wait till rows are there
-if(!customers) return(<p>Loading customers..</p>);
 
 // Error messages
 const errMessageDelete  = "Can not delete customer,\n because a project still exists.";
@@ -55,7 +55,7 @@ const onDel = (e: React.FormEvent,row:Customer)=>{
 
   simplifiedDBApi("DELETE",`customer/${row.custID}`,{})
   // Callback to refresh page after API
-  .then(() => window.location.reload())
+  .then(() => window.location.reload()) 
   .catch((error: any) => {
     // handle error
     if (error.response.status === 500) alert(errMessageDelete);

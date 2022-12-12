@@ -3,15 +3,12 @@ package server.CRM.Building.Company.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.CRM.Building.Company.model.Customer;
-import server.CRM.Building.Company.model.Greeting;
 import server.CRM.Building.Company.model.Project;
 import server.CRM.Building.Company.repository.CustomerRepository;
-import server.CRM.Building.Company.repository.ProductRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
 
 @RestController
@@ -24,9 +21,6 @@ public class ProjectController {
 
     @Autowired
     private ProjectRepository projectRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     // ------------- Routes -------------
     // Show all projects
