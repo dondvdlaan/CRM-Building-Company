@@ -1,15 +1,18 @@
 package server.CRM.Building.Company.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity // This tells JPA/Hibernate to make a table out of this class
 public class Customer {
-    // region 0 Constants
+
+    // *** Constants ***
+    private static final int DEF_VALUE_INT = -1;
+    private static final String DEF_VALUE_STR = ">nothingToSeeHere<";
+
+    // *** Declaration and initialisation attributes ***
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto increment id
     private Integer custID;
@@ -17,45 +20,29 @@ public class Customer {
     private String custLastName;
     private String custEmail;
     private String custTel;
-    private String custStreet;
-    private String custHouseNumber;
-    private String custZipCode;
-    private String custCity;
-    private String custCountry;
-    @CreationTimestamp
-    private Timestamp custRegistrationDate;
+    // Cascade tells Hibernate to update table Address too
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "addressID")
+    private Address custAddress;
+    private LocalDate custRegistrationDate;
 
-    //W mappedBy we create bidirectional relationship
-    @OneToMany(mappedBy = "customer",  orphanRemoval = false, fetch=FetchType.LAZY)
-    @JsonIgnore
-    private List<Project> project;
+    @OneToMany
+    //@JoinColumn(name = "custID")
+    private List<Project> custProjects;
 
 
     // region 1 Constructors
     // For the sake of JPA
-    public Customer(){}
-
-    public Customer(Integer custID, String custFirstName, String custLastName, String custEmail, String custTel, String custStreet, String custHouseNumber, String custZipCode, String custCity, String custCountry, Timestamp custRegistrationDate) {
-        this.custID = custID;
-        this.custFirstName = custFirstName;
-        this.custLastName = custLastName;
-        this.custEmail = custEmail;
-        this.custTel = custTel;
-        this.custStreet = custStreet;
-        this.custHouseNumber = custHouseNumber;
-        this.custZipCode = custZipCode;
-        this.custCity = custCity;
-        this.custCountry = custCountry;
-        this.custRegistrationDate = custRegistrationDate;
+    public Customer(){
+        this.custFirstName = DEF_VALUE_STR;
+        this.custLastName = DEF_VALUE_STR;
+        this.custEmail = DEF_VALUE_STR;
+        this.custTel = DEF_VALUE_STR;
+        this.custAddress = new Address();
+        this.custRegistrationDate = LocalDate.now();
+        this.custProjects = new ArrayList<>();
     }
-
-    public Customer(String custFirstName, String custLastName, String custEmail) {
-        this.custFirstName = custFirstName;
-        this.custLastName = custLastName;
-        this.custEmail = custEmail;
-    }
-
-    // region 2 Getters and Setters
+    // *** Getter und Setter ***
 
     public Integer getCustID() {
         return custID;
@@ -97,62 +84,29 @@ public class Customer {
         this.custTel = custTel;
     }
 
-    public String getCustStreet() {
-        return custStreet;
+    public Address getCustAddress() {
+        return custAddress;
     }
 
-    public void setCustStreet(String custStreet) {
-        this.custStreet = custStreet;
+    public void setCustAddress(Address custAddress) {
+        this.custAddress = custAddress;
     }
 
-    public String getCustHouseNumber() {
-        return custHouseNumber;
-    }
-
-    public void setCustHouseNumber(String custHouseNumber) {
-        this.custHouseNumber = custHouseNumber;
-    }
-
-    public String getCustZipCode() {
-        return custZipCode;
-    }
-
-    public void setCustZipCode(String custZipCode) {
-        this.custZipCode = custZipCode;
-    }
-
-    public String getCustCity() {
-        return custCity;
-    }
-
-    public void setCustCity(String custCity) {
-        this.custCity = custCity;
-    }
-
-    public String getCustCountry() {
-        return custCountry;
-    }
-
-    public void setCustCountry(String custCountry) {
-        this.custCountry = custCountry;
-    }
-
-    public Timestamp getCustRegistrationDate() {
+    public LocalDate getCustRegistrationDate() {
         return custRegistrationDate;
     }
 
-    public void setCustRegistrationDate(Timestamp custRegistrationDate) {
+    public void setCustRegistrationDate(LocalDate custRegistrationDate) {
         this.custRegistrationDate = custRegistrationDate;
     }
 
-    public List<Project> getProject() {
-        return project;
+    public List<Project> getCustProjects() {
+        return custProjects;
     }
 
-    public void setProject(List<Project> project) {
-        this.project = project;
+    public void setCustProjects(List<Project> custProjects) {
+        this.custProjects = custProjects;
     }
-    // region 3 toString
 
     @Override
     public String toString() {
@@ -162,12 +116,9 @@ public class Customer {
                 ", custLastName='" + custLastName + '\'' +
                 ", custEmail='" + custEmail + '\'' +
                 ", custTel='" + custTel + '\'' +
-                ", custStreet='" + custStreet + '\'' +
-                ", custHouseNumber='" + custHouseNumber + '\'' +
-                ", custZipCode='" + custZipCode + '\'' +
-                ", custCity='" + custCity + '\'' +
-                ", custCountry='" + custCountry + '\'' +
+                ", address=" + custAddress +
                 ", custRegistrationDate=" + custRegistrationDate +
+                ", project=" + custProjects +
                 '}';
     }
 }

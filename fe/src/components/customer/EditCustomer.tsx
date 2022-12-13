@@ -30,6 +30,7 @@ return(
     custCity={customer.custCity}
     custCountry={customer.custCountry}
     custRegistrationDate={customer.custRegistrationDate}
+    custAddress={customer.custAddress}
     isEdit={true}
     currentPage="Edit Customer"
 />

@@ -27,16 +27,18 @@ interface Props extends Customer{
 export default function CustomerForm(props:Props) {
 
   // **************** Constants and variables **************** 
+  const auth = useStorageApi("userToken");
+
   // Input fields
   const [custFirstName, setCustFirstName] = useState(props.custFirstName);
   const [custLastName, setCustLastName] = useState(props.custLastName);
   const [custTel, setCustTel] = useState(props.custTel);
   const [custEmail, setCustEmail] = useState(props.custEmail);
-  const [custStreet, setCustStreet] = useState(props.custStreet);
-  const [custHouseNumber, setCustHouseNumber] = useState(props.custHouseNumber);
-  const [custZipCode, setCustZipCode] = useState(props.custZipCode);
-  const [custCity, setCustCity] = useState(props.custCity);
-  const [custCountry, setCustCountry] = useState(props.custCountry);
+  const [custStreet, setCustStreet] = useState(props.custAddress.addressStreet);
+  const [custHouseNumber, setCustHouseNumber] = useState(props.custAddress.addressHouseNumber);
+  const [custZipCode, setCustZipCode] = useState(props.custAddress.addressZipCode);
+  const [custCity, setCustCity] = useState(props.custAddress.addressCity);
+  const [custCountry, setCustCountry] = useState(props.custAddress.addressCountry);
   // Not used as input field, but to complete Customer object to be sent to DB
   const [custRegistrationDate, setCustRegistrationDate] = useState(props.custRegistrationDate);
 
@@ -48,13 +50,10 @@ export default function CustomerForm(props:Props) {
   const errMessageName    = "Please fill in your name";
   const errMessageEmail   = "Incorrect email, format is a@bcd.efg";
 
-
   const theme = useTheme();
   const navigate = useNavigate();
-
-  // Check if user is logged in
-  const auth = useStorageApi("userToken");
   
+  // Check if user is logged in
   if(!auth) return <LogIn />;
   
   //Minimum requirements for email input field
@@ -63,16 +62,20 @@ export default function CustomerForm(props:Props) {
   //Compose customer payload object
   const customer = () =>
     ({
+      custID: props.custID,
       custFirstName,
       custLastName,
       custTel,
       custEmail,
-      custStreet,
-      custHouseNumber,
-      custZipCode,
-      custCity,
-      custCountry,
-      custRegistrationDate
+      custRegistrationDate,
+      custAddress: {
+        addressID: props.custAddress.addressID,
+        addressStreet: custStreet,
+        addressHouseNumber: custHouseNumber,
+        addressZipCode: custZipCode,
+        addressCity: custCity,
+        addressCountry: custCountry
+      }
     })
 
 // **************** Functions ****************

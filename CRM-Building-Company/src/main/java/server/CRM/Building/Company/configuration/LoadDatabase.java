@@ -5,8 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import server.CRM.Building.Company.model.Address;
+import server.CRM.Building.Company.model.Customer;
 import server.CRM.Building.Company.model.User;
 import server.CRM.Building.Company.repository.UserRepository;
+
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Configuration
 class LoadDatabase {

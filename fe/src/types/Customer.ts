@@ -1,3 +1,5 @@
+import { Address } from "./Auxiliar";
+
 export interface Customer extends CustomerWORegDate{
     custRegistrationDate: string
 }
@@ -13,4 +15,5 @@ export interface CustomerWORegDate{
     custZipCode: string;
     custCity: string;
     custCountry: string;
+    custAddress: Address;
 }

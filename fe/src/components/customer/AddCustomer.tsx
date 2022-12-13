@@ -7,6 +7,15 @@ import CustomerForm from "./CustomerForm"
  */
 export const AddCustomer = (): ReactElement =>{
 
+    // *** Constants and variables ***
+    const initAddress = {
+        addressID: "",
+        addressStreet: "",
+        addressHouseNumber: "",
+        addressZipCode: "",
+        addressCity: "",
+        addressCountry:""}
+
 return(
 <CustomerForm
     custID=""
@@ -20,6 +29,7 @@ return(
     custCity=""
     custCountry=""
     custRegistrationDate=""
+    custAddress={initAddress}
     isEdit={false}
     currentPage="Add Customer"
 />

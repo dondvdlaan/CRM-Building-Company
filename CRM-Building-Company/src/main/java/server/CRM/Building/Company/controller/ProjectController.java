@@ -6,8 +6,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.CRM.Building.Company.model.Customer;
+import server.CRM.Building.Company.model.Address;
 import server.CRM.Building.Company.model.Project;
+import server.CRM.Building.Company.repository.AddressRepository;
 import server.CRM.Building.Company.repository.CustomerRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
 
@@ -22,6 +23,9 @@ public class ProjectController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     // ------------- Routes -------------
     // Show all projects
     @GetMapping("/allProjects")
@@ -35,36 +39,50 @@ public class ProjectController {
         return projects;
     }
 
-    // Get project
+    // Get project by id
     @GetMapping("/project/{id}")
     public Project getProject(@PathVariable Integer id){
 
-        Optional<Project> project = projectRepository.findById(id);
         System.out.println("getProject");
-        return project.get();
+
+        Project returnProject = new Project();
+
+        Optional<Project> project = projectRepository.findById(id);
+
+        if(project.isPresent()) returnProject = project.get();
+
+        return returnProject;
     }
     // Add Project
     @PostMapping("/customer/{custID}/project")
     public void addProject(@PathVariable Integer custID, @RequestBody Project project){
 
         System.out.println("addProject");
-        //Optional<Customer>customer = customerRepository.findById(custID);
+        System.out.println("project " + project);
 
-        customerRepository.findById(custID).ifPresent(customer->{
-            //customer.setProject(project);
-            project.setCustomer(customer);
-        });
 
-        System.out.println("CustID " + custID);
-        System.out.println(project.toString());
 
-        projectRepository.save(project);
+        // Create new project
+        Project newProject = new Project();
+        newProject = project;
+        // Add customer to project
+        customerRepository.findById(custID).ifPresent(newProject::setProjCustomer);
+
+        // Create and get address
+        Address projAddress = new Address();
+        projAddress = project.getProjAddress();
+
+        // Save address and add to project
+        newProject.setProjAddress(addressRepository.save(projAddress));
+
+        projectRepository.save(newProject);
     }
     // Update Project
     @PutMapping("/customer/{custID}/project")
     public void updateProject(@PathVariable Integer custID, @RequestBody Project project){
 
         System.out.println("updateProject");
+        /**
         Optional<Customer>customer = customerRepository.findById(custID);
         Customer temp = new Customer();
         if(customer.isPresent()){
@@ -73,10 +91,10 @@ public class ProjectController {
 
 
         project.setCustomer(temp);
-        System.out.println("CustID " + custID);
-        System.out.println("temp " + temp.toString());
-        System.out.println(customer.toString());
-        System.out.println(project.toString());
+         */
+
+        // Add customer to project
+        customerRepository.findById(custID).ifPresent(project::setProjCustomer);
 
         projectRepository.save(project);
     }

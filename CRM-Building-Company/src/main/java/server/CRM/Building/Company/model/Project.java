@@ -4,7 +4,12 @@ import javax.persistence.*;
 
 @Entity // This tells JPA/Hibernate to make a table out of this class
 public class Project {
-    // region 0 Constants
+
+    // *** Constants ***
+    private static final int DEF_VALUE_INT = -1;
+    private static final String DEF_VALUE_STR = ">nothingToSeeHere<";
+
+    // *** Declaration and initialisation attributes ***
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Auto increment id
     private Integer projID;
@@ -17,20 +22,31 @@ public class Project {
     private String projNote;
     private String projStatus;
     private String projLostComment;
-    private String projStreet;
-    private String projHouseNumber;
-    private String projZipCode;
-    private String projCity;
-    private String projCountry;
-
+    // Cascade tells Hibernate to update table Address too
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "addressID")
+    private Address projAddress;
     // A customer can be assigned to more projects. FK here at project
     @ManyToOne()
     @JoinColumn(name = "custID")
-    private Customer customer;
+    private Customer projCustomer;
 
     // region 1 Constructors
-    public Project() {
+    public Project(){
+        this.projTitle = DEF_VALUE_STR;
+        this.projDesc = DEF_VALUE_STR;
+        this.projType = DEF_VALUE_STR;
+        this.projLand = DEF_VALUE_STR;
+        this.projSurface = DEF_VALUE_STR;
+        this.projStart = DEF_VALUE_STR;
+        this.projNote = DEF_VALUE_STR;
+        this.projStatus = DEF_VALUE_STR;
+        this.projLostComment = DEF_VALUE_STR;
+        this.projAddress = new Address();
+        this.projCustomer = new Customer();
     }
+
+    // *** Getter und Setter ***
 
     public Integer getProjID() {
         return projID;
@@ -84,14 +100,6 @@ public class Project {
         return projStart;
     }
 
-    public String getProjLostComment() {
-        return projLostComment;
-    }
-
-    public void setProjLostComment(String projLostComment) {
-        this.projLostComment = projLostComment;
-    }
-
     public void setProjStart(String projStart) {
         this.projStart = projStart;
     }
@@ -104,60 +112,36 @@ public class Project {
         this.projNote = projNote;
     }
 
-    public String getProjStreet() {
-        return projStreet;
-    }
-
-    public void setProjStreet(String projStreet) {
-        this.projStreet = projStreet;
-    }
-
-    public String getProjHouseNumber() {
-        return projHouseNumber;
-    }
-
-    public void setProjHouseNumber(String projHouseNumber) {
-        this.projHouseNumber = projHouseNumber;
-    }
-
-    public String getProjZipCode() {
-        return projZipCode;
-    }
-
-    public void setProjZipCode(String projZipCode) {
-        this.projZipCode = projZipCode;
-    }
-
-    public String getProjCity() {
-        return projCity;
-    }
-
-    public void setProjCity(String projCity) {
-        this.projCity = projCity;
-    }
-
-    public String getProjCountry() {
-        return projCountry;
-    }
-
-    public void setProjCountry(String projCountry) {
-        this.projCountry = projCountry;
-    }
-
-    public Customer getCustomer() {
-       return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     public String getProjStatus() {
         return projStatus;
     }
 
     public void setProjStatus(String projStatus) {
         this.projStatus = projStatus;
+    }
+
+    public String getProjLostComment() {
+        return projLostComment;
+    }
+
+    public void setProjLostComment(String projLostComment) {
+        this.projLostComment = projLostComment;
+    }
+
+    public Address getProjAddress() {
+        return projAddress;
+    }
+
+    public void setProjAddress(Address projAddress) {
+        this.projAddress = projAddress;
+    }
+
+    public Customer getProjCustomer() {
+        return projCustomer;
+    }
+
+    public void setProjCustomer(Customer projCustomer) {
+        this.projCustomer = projCustomer;
     }
 
     @Override
@@ -173,12 +157,8 @@ public class Project {
                 ", projNote='" + projNote + '\'' +
                 ", projStatus='" + projStatus + '\'' +
                 ", projLostComment='" + projLostComment + '\'' +
-                ", projStreet='" + projStreet + '\'' +
-                ", projHouseNumber='" + projHouseNumber + '\'' +
-                ", projZipCode='" + projZipCode + '\'' +
-                ", projCity='" + projCity + '\'' +
-                ", projCountry='" + projCountry + '\'' +
-                ", customer=" + customer +
+                ", projAddress=" + projAddress +
+                ", projCustomer=" + projCustomer +
                 '}';
     }
 }

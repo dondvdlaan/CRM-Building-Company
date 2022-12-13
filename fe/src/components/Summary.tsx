@@ -1,5 +1,5 @@
 import { simplifiedDBApi, useDBApi, useStorageApi } from "../shared/Api"
-import { RawProjectWCustomer } from "../types/Project";
+import { ProjectWCustomer } from "../types/Project";
 import BasicMenu from "../uiElements/BasicMenu"
 import ButtonAppBar from "../uiElements/ButtonAppBar"
 import LogIn from "./login/LogIn";

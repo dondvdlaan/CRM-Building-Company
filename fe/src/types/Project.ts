@@ -10,53 +10,24 @@ export interface Project{
     projStatus: string;
     projLostComment: string
     projNote: string;
-    projStreet: string;
-    projHouseNumber: string;
-    projZipCode: string;
-    projCity: string;
-    projCountry: string;
-    custID: string
+    projAddress:{
+        addressStreet: string;
+        addressHouseNumber: string;
+        addressZipCode: string;
+        addressCity: string;
+        addressCountry: string;
+    }
     }
 
-export interface ProjectWCustomer{
-    projID: string;
-    projTitle: string;
-    projDesc: string;
-    projType: string;
-    projLand: string;
-    projSurface: string;
-    projStart: string;
-    projStatus: string;
-    projLostComment: string;
-    projNote: string;
-    projStreet: string;
-    projHouseNumber: string;
-    projZipCode: string;
-    projCity: string;
-    projCountry: string;
-    custID: string;
-    custFirstName: string;
-    custLastName: string;
-    custTel: string;
-    custEmail: string;
-}
-export interface RawProjectWCustomer{
-    projID: string;
-    projTitle: string;
-    projDesc: string;
-    projType: string;
-    projLand: string;
-    projSurface: string;
-    projStart: string;
-    projStatus: string;
-    projLostComment: string;
-    projNote: string;
-    projStreet: string;
-    projHouseNumber: string;
-    projZipCode: string;
-    projCity: string;
-    projCountry: string;
-    customer:{
+// export interface ProjectWCustomer extends Project{
+//     custID: string;
+//     custFirstName: string;
+//     custLastName: string;
+//     custTel: string;
+//     custEmail: string;
+// }
+export interface ProjectWCustomer extends Project{
+    projCustomer:{
         custID: string;
         custFirstName: string;
         custLastName: string;

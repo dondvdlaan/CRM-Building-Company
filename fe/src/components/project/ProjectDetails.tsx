@@ -1,7 +1,7 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import {useParams,useNavigate} from "react-router-dom";
 import { simplifiedDBApi, useDBApi, useStorageApi } from "../../shared/Api";
-import { RawProjectWCustomer } from "../../types/Project";
+import { ProjectWCustomer } from "../../types/Project";
 import Paper from '@mui/material/Paper';
 import Typography  from "@mui/material/Typography";
 import Button from '@mui/material/Button';
@@ -16,7 +16,7 @@ export const ProjectDetails = () =>{
 // *********** Constants and variables ***********
 const auth      = useStorageApi("userToken");
 const params    = useParams();
-const [project] = useDBApi<RawProjectWCustomer>("GET",`project/${params.id}`);
+const [project] = useDBApi<ProjectWCustomer>("GET",`project/${params.id}`);
 const navigate  = useNavigate();
 
 // Wait till project arrived
@@ -86,31 +86,31 @@ return(
             <Typography variant="body1" ml={2} >Street:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" ml={2} >{project.projStreet}</Typography>
+            <Typography variant="body1" ml={2} >{project.projAddress.addressStreet}</Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body1" ml={2} >House number:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" ml={2} >{project.projHouseNumber}</Typography>
+            <Typography variant="body1" ml={2} >{project.projAddress.addressHouseNumber}</Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body1" ml={2} >Zip code:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" ml={2} >{project.projZipCode}</Typography>
+            <Typography variant="body1" ml={2} >{project.projAddress.addressZipCode}</Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body1" ml={2} >City:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" ml={2} >{project.projCity}</Typography>
+            <Typography variant="body1" ml={2} >{project.projAddress.addressCity}</Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body1" ml={2} >Country:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" ml={2} >{project.projCountry}</Typography>
+            <Typography variant="body1" ml={2} >{project.projAddress.addressCountry}</Typography>
           </Grid>
         </Grid>
       
@@ -131,13 +131,13 @@ return(
 
     <Grid item xs={4}>
         {/* Customer */}
-      <Link href={`/editCustomer/${project.customer.custID}`}> 
+      <Link href={`/editCustomer/${project.custID}`}> 
         <Paper elevation={5} sx={{mt:1}} >
           <Typography variant="h6" mb={2} ml={2}>Customer</Typography>
-          <Typography variant="body1" ml={2} >Name: {project.customer.custFirstName} {project.customer.custLastName}</Typography>
-          <Typography variant="body1" ml={2} >Tel: {project.customer.custTel}</Typography>
-          <Typography variant="body1" ml={2} >Email: {project.customer.custEmail}</Typography>
-          <Typography variant="body1" ml={2} >Customer since: {project.customer.custRegistrationDate.slice(0,10)}</Typography>
+          <Typography variant="body1" ml={2} >Name: {project.projCustomer.custFirstName} {project.projCustomer.custLastName}</Typography>
+          <Typography variant="body1" ml={2} >Tel: {project.projCustomer.custTel}</Typography>
+          <Typography variant="body1" ml={2} >Email: {project.projCustomer.custEmail}</Typography>
+          <Typography variant="body1" ml={2} >Customer since: {project.projCustomer.custRegistrationDate.slice(0,10)}</Typography>
         </Paper>
       </Link>   
 

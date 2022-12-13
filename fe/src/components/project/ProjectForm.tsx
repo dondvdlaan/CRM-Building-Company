@@ -17,7 +17,7 @@ import ButtonAppBar from "../../uiElements/ButtonAppBar"
 
 import { simplifiedDBApi, useDBApi, useStorageApi } from '../../shared/Api';
 import { Method } from "axios";
-import { ProjectWCustomer } from '../../types/Project';
+import { Project, ProjectWCustomer } from '../../types/Project';
 import { Customer } from '../../types/Customer';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -36,7 +36,7 @@ interface Props extends ProjectWCustomer{
 export default function ProjectForm(props:Props) {
   
   // **************** Constants and variables **************** 
-  // Retrieve customers from DB for pop-up window
+  // Retrieve customers from DB for pop-up menu window
   const [customers]   = useDBApi<Customer[]>("GET","allCustomers")
   
   // Get user token to check log in
@@ -51,14 +51,12 @@ export default function ProjectForm(props:Props) {
   const [projStart, setProjStart]         = useState<Dayjs | null>(dayjs(props.projStart));
   const [projStatus, setProjStatus]       = useState(props.projStatus);
   const [projNote, setProjNote]           = useState(props.projNote);
-  const [projStreet, setProjStreet]       = useState(props.projStreet);
-  const [projHouseNumber, setProjHouseNumber] = useState(props.projHouseNumber);
-  const [projZipCode, setProjZipCode]     = useState(props.projZipCode);
-  const [projCity, setProjCity]           = useState(props.projCity);
-  const [projCountry, setProjCountry]     = useState(props.projCountry);
-  const [custFirstName, setCustFirstName] = useState(props.custFirstName);
-  const [custLastName, setCustLastName]   = useState(props.custLastName);
-  const [custID, setCustID]               = useState(props.custID);
+  const [projStreet, setProjStreet]       = useState(props.projAddress.addressStreet);
+  const [projHouseNumber, setProjHouseNumber] = useState(props.projAddress.addressHouseNumber);
+  const [projZipCode, setProjZipCode]     = useState(props.projAddress.addressZipCode);
+  const [projCity, setProjCity]           = useState(props.projAddress.addressCity);
+  const [projCountry, setProjCountry]     = useState(props.projAddress.addressCountry);
+  const [custID, setCustID]               = useState(props.projCustomer.custID);
   
   // Error states
   const [errorTitle, setErrorTitle]         = useState<boolean>(false);
@@ -70,19 +68,22 @@ export default function ProjectForm(props:Props) {
   const [openProjLost, setOpenProjLost]       = useState<boolean>(true);
   const [projLostComment, setProjLostComment] = useState(props.projLostComment);
   
-  // Error messages
-  const errMessageTitle     = "Please fill in Title and Description";
-  const errMessageCustomer  = "Please select a customer";
-  const errMessageRequired  = "Your input is required";
   
   const navigate = useNavigate();
-
+  
   // Wait till customers arrived (after last hook)
   if(!customers) return(<p>Loading customers...</p>)
   
   // Check if user is logged in
   if(!auth) return <LogIn />;
+
+  const custFirstName = props.projCustomer.custFirstName;
+  const custLastName  = props.projCustomer.custLastName;
   
+  // Error messages
+  const errMessageTitle     = "Please fill in Title and Description";
+  const errMessageCustomer  = "Please select a customer";
+  const errMessageRequired  = "Your input is required";
 
 //Compose project payload object
   const project= () =>
@@ -97,11 +98,13 @@ export default function ProjectForm(props:Props) {
       projStatus,
       projLostComment,
       projNote,
-      projStreet,
-      projHouseNumber,
-      projZipCode,
-      projCity,
-      projCountry,
+      projAddress:{
+        addressStreet       : projStreet,
+        addressHouseNumber  : projHouseNumber,
+        addressZipCode      : projZipCode,
+        addressCity         : projCity,
+        addressCountry      : projCountry,
+      }
     })
 
 

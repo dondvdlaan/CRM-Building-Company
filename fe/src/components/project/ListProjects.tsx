@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef, GridEventListener, GridValueGetterParams } from '@mui/x-data-grid';
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
 import { useDBApi, useStorageApi } from '../../shared/Api';
-import { Project, RawProjectWCustomer } from '../../types/Project';
+import { Project, ProjectWCustomer } from '../../types/Project';
 import { useNavigate } from 'react-router-dom';
 import LogIn from '../login/LogIn';
 
@@ -16,12 +16,12 @@ const columns: GridColDef[] = [
   ];
 
 /**
- * omponent to list all projects
+ * Component to list all projects
  */
 export const ListProjects = () =>{
 
 // **************** Constants and variables ****************
-const [projects ]   = useDBApi<RawProjectWCustomer[]>('GET','allProjects')
+const [projects ]   = useDBApi<ProjectWCustomer[]>('GET','allProjects')
 const navigate      = useNavigate();
 const auth          = useStorageApi("userToken");
 
@@ -41,8 +41,8 @@ for(let project of projects){
           projTitle     : project.projTitle,
           projDesc      : project.projDesc,
           projStatus    : project.projStatus,
-          custFirstName : project.customer.custFirstName,
-          custLastName  : project.customer.custLastName
+          custFirstName : project.projCustomer.custFirstName,
+          custLastName  : project.projCustomer.custLastName
         }
         projectsPrepared.push(temp)
     }

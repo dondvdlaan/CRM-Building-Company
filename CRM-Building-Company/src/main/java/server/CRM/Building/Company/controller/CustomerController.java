@@ -5,9 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.CRM.Building.Company.model.Address;
 import server.CRM.Building.Company.model.Customer;
+import server.CRM.Building.Company.repository.AddressRepository;
 import server.CRM.Building.Company.repository.CustomerRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
+
+import java.time.LocalDate;
 
 @RestController
 @CrossOrigin
@@ -20,6 +24,9 @@ public class CustomerController {
 
     @Autowired // This means to get the bean called projectRepository
     private ProjectRepository projectRepository;
+
+    @Autowired // This means to get the bean called addressRepository
+    private AddressRepository addressRepository;
 
     // ------------- Routes -------------
     // Show all customers
@@ -56,32 +63,51 @@ public class CustomerController {
     }
     // Update customer
     @PutMapping("/customer/{id}")
-    public void updateCustomer(@RequestBody Customer customer, @PathVariable Integer id){
-
-        // Not to change original parameter customer
-        Customer updatedCustomer = customer;
-
-        updatedCustomer.setCustID(id);
+    public void updateCustomer(@RequestBody Customer updateCustomer, @PathVariable Integer id){
 
         System.out.println("updateCustomer");
-        customerRepository.save(updatedCustomer);
+        System.out.println("updateCustomer: " + updateCustomer.toString());
+
+        customerRepository.findById(id)
+                .map(customer -> {
+                            customer.setCustFirstName(updateCustomer.getCustFirstName());
+                            customer.setCustLastName(updateCustomer.getCustLastName());
+                            customer.setCustEmail(updateCustomer.getCustEmail());
+                            customer.setCustTel(updateCustomer.getCustTel());
+                            customer.setCustAddress(updateCustomer.getCustAddress());
+                    System.out.println("customer: " + customer.toString());
+
+                    return customerRepository.save(customer);
+                });
+
     }
     // Add Customer
     @PostMapping("/customer")
     public Customer addCustomer(@RequestBody Customer customer){
 
         System.out.println("addCustomer");
+        System.out.println("Customer: " + customer.toString());
 
-        return customerRepository.save(customer);
+        // Create new customer
+        Customer newCustomer = new Customer();
+        newCustomer = customer;
+
+        // Set registration date
+        newCustomer.setCustRegistrationDate(LocalDate.now());
+
+        // Create new address and save
+        Address newAddress = new Address();
+        newAddress = customer.getCustAddress();
+        Address newAddressSaved = addressRepository.save(newAddress);
+
+        // Add address to new customer
+        newCustomer.setCustAddress(newAddressSaved);
+
+        System.out.println("newCustomer: " + newCustomer.toString());
+
+
+        return customerRepository.save(newCustomer);
     }
 
-    // Testing
-    // Show customer by lastname
-    @RequestMapping("/custLastName")
-    public @ResponseBody Iterable getLastName(@RequestParam(value = "name", defaultValue = "World") String name){
 
-        System.out.println("getLastName");
-        return customerRepository.findBycustLastName(name);
-    }
-    // END Testing
 }

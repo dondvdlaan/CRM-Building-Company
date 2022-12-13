@@ -7,6 +7,24 @@ import ProjectForm from "./ProjectForm"
  */
 export const AddProject = (): ReactElement =>{
 
+    // *** Constants and variables **
+    const initAddress = {
+        addressAddress:"",
+        addressStreet:"",  
+        addressHouseNumber:"",
+        addressZipCode:"",
+        addressCity:"",
+        addressCountry:"", 
+    }
+
+    const initCustomer = {
+        custFirstName: "",
+        custLastName: "",
+        custTel: "",
+        custEmail: "",
+        custRegistrationDate: "",
+    }
+
 return(
 <ProjectForm
     projID=""
@@ -14,21 +32,14 @@ return(
     projDesc=""
     projType=""
     projLand=""
-    projSurface="0"
+    projSurface=""
     projStart={new Date().toString()}
     projStatus=""
     projLostComment=""
     projNote=""
-    projStreet=""   
-    projHouseNumber=""
-    projZipCode=""
-    projCity=""
-    projCountry=""
+    projAddress={initAddress}
+    projCustomer = {initCustomer}
     custID=""
-    custFirstName=""
-    custLastName=""
-    custTel=""
-    custEmail=""
     isEdit={false}
     currentPage="Add Project"
 

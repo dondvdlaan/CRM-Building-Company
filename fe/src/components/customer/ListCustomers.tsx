@@ -100,10 +100,10 @@ return(
                 </Grid>
               </TableCell>
               <TableCell align="left">
-                <Typography variant="body2">{customer.custStreet} {customer.custHouseNumber}</Typography>
-                <Typography variant="body2">{customer.custZipCode}</Typography>
-                <Typography variant="body2">{customer.custCity}</Typography>
-                <Typography variant="body2">{customer.custCountry}</Typography>
+                <Typography variant="body2">{customer.custAddress.addressStreet} {customer.custAddress.addressHouseNumber}</Typography>
+                <Typography variant="body2">{customer.custAddress.addressZipCode}</Typography>
+                <Typography variant="body2">{customer.custAddress.addressCity}</Typography>
+                <Typography variant="body2">{customer.custAddress.addressCountry}</Typography>
               </TableCell>
               <TableCell >
                 <Typography variant="body2">

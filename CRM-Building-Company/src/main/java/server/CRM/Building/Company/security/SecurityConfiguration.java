@@ -23,7 +23,9 @@ public class SecurityConfiguration
                 // For testing purposes CSRF is disabled
                 .disable()
                 .authorizeRequests()
+                // Temporarily no authentication checks are conducted
                 .antMatchers("/user/logIn").anonymous()
+                .antMatchers("/**").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
