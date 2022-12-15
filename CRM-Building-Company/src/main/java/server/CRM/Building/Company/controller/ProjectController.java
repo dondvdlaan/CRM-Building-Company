@@ -32,11 +32,14 @@ public class ProjectController {
     public  List<Project> getAllProjects(){
 
         System.out.println("Route: allProjects");
+        /**
         List<Project> projects = new ArrayList<>();
         projectRepository.findAll().forEach(projects::add);
         //projects.toString();
 
         return projects;
+         */
+        return projectRepository.findByOrderByProjForecastOrderDateAsc();
     }
 
     // Get project by id

@@ -1,6 +1,7 @@
 package server.CRM.Building.Company.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity // This tells JPA/Hibernate to make a table out of this class
 public class Project {
@@ -21,6 +22,7 @@ public class Project {
     private String projStart;
     private String projNote;
     private String projStatus;
+    private LocalDate projForecastOrderDate;
     private String projLostComment;
     // Cascade tells Hibernate to update table Address too
     @OneToOne(cascade = {CascadeType.ALL})
@@ -40,6 +42,7 @@ public class Project {
         this.projSurface = DEF_VALUE_STR;
         this.projStart = DEF_VALUE_STR;
         this.projNote = DEF_VALUE_STR;
+        this.projForecastOrderDate = LocalDate.now();
         this.projStatus = DEF_VALUE_STR;
         this.projLostComment = DEF_VALUE_STR;
         this.projAddress = new Address();
@@ -47,7 +50,6 @@ public class Project {
     }
 
     // *** Getter und Setter ***
-
     public Integer getProjID() {
         return projID;
     }
@@ -120,6 +122,14 @@ public class Project {
         this.projStatus = projStatus;
     }
 
+    public LocalDate getProjForecastOrderDate() {
+        return projForecastOrderDate;
+    }
+
+    public void setProjForecastOrderDate(LocalDate projForecastOrderDate) {
+        this.projForecastOrderDate = projForecastOrderDate;
+    }
+
     public String getProjLostComment() {
         return projLostComment;
     }
@@ -156,6 +166,7 @@ public class Project {
                 ", projStart='" + projStart + '\'' +
                 ", projNote='" + projNote + '\'' +
                 ", projStatus='" + projStatus + '\'' +
+                ", projForecastOrderDate=" + projForecastOrderDate +
                 ", projLostComment='" + projLostComment + '\'' +
                 ", projAddress=" + projAddress +
                 ", projCustomer=" + projCustomer +

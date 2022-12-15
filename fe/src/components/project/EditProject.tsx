@@ -28,12 +28,12 @@ return(
     projLand={project.projLand}
     projSurface={project.projSurface}
     projStatus={project.projStatus}
+    projForecastOrderDate={project.projForecastOrderDate}
     projLostComment={project.projLostComment}
     projStart={project.projStart}
     projNote={project.projNote}
     projAddress = {project.projAddress}
     projCustomer = {project.projCustomer}
-    custID={project.custID}
     isEdit={true}
     currentPage="Edit Project"
 />

@@ -10,4 +10,8 @@ Summary:
 - Database  : MySQL
 - Front-end : REACT
 - CSS       : Material UI
+
+You can log in with:
+email - admin@admin.com
+pw - 1234
  

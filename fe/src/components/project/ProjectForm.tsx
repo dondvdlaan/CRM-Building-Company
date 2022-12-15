@@ -17,7 +17,7 @@ import ButtonAppBar from "../../uiElements/ButtonAppBar"
 
 import { simplifiedDBApi, useDBApi, useStorageApi } from '../../shared/Api';
 import { Method } from "axios";
-import { Project, ProjectWCustomer } from '../../types/Project';
+import { ProjectWCustomer } from '../../types/Project';
 import { Customer } from '../../types/Customer';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -50,6 +50,8 @@ export default function ProjectForm(props:Props) {
   const [projSurface, setProjSurface]     = useState(props.projSurface);
   const [projStart, setProjStart]         = useState<Dayjs | null>(dayjs(props.projStart));
   const [projStatus, setProjStatus]       = useState(props.projStatus);
+  const [projForecastOrderDate, setProjForecastOrderDate] = 
+                              useState<Dayjs | null>(dayjs(props.projForecastOrderDate));
   const [projNote, setProjNote]           = useState(props.projNote);
   const [projStreet, setProjStreet]       = useState(props.projAddress.addressStreet);
   const [projHouseNumber, setProjHouseNumber] = useState(props.projAddress.addressHouseNumber);
@@ -96,6 +98,7 @@ export default function ProjectForm(props:Props) {
       projSurface,
       projStart,
       projStatus,
+      projForecastOrderDate,
       projLostComment,
       projNote,
       projAddress:{
@@ -318,6 +321,17 @@ const onHandleProject = (e: React.FormEvent) => {
             required={false}
             label="Surface m2"
           />
+        </Grid>
+        <Grid item xs={1}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DesktopDatePicker
+              label="Order Date Forecast"
+              inputFormat="DD/MM/YYYY"
+              value={projForecastOrderDate}
+              onChange={setProjForecastOrderDate}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid item xs={1}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>

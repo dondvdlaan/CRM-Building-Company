@@ -131,7 +131,7 @@ return(
 
     <Grid item xs={4}>
         {/* Customer */}
-      <Link href={`/editCustomer/${project.custID}`}> 
+      <Link href={`/editCustomer/${project.projCustomer.custID}`}> 
         <Paper elevation={5} sx={{mt:1}} >
           <Typography variant="h6" mb={2} ml={2}>Customer</Typography>
           <Typography variant="body1" ml={2} >Name: {project.projCustomer.custFirstName} {project.projCustomer.custLastName}</Typography>
@@ -144,6 +144,7 @@ return(
         <Paper elevation={5} sx={{mt:2}}>
           <Typography variant="h6" mb={2} ml={2}>Project Status</Typography>
           <Typography variant="body1" ml={2} >Status: {project.projStatus}</Typography>
+          <Typography variant="body1" ml={2} >Forecast Order Date: {project.projForecastOrderDate}</Typography>
         
         </Paper>
     </Grid>

@@ -8,6 +8,7 @@ export interface Project{
     projSurface: string;
     projStart: string;
     projStatus: string;
+    projForecastOrderDate: string;
     projLostComment: string
     projNote: string;
     projAddress:{
@@ -19,13 +20,6 @@ export interface Project{
     }
     }
 
-// export interface ProjectWCustomer extends Project{
-//     custID: string;
-//     custFirstName: string;
-//     custLastName: string;
-//     custTel: string;
-//     custEmail: string;
-// }
 export interface ProjectWCustomer extends Project{
     projCustomer:{
         custID: string;

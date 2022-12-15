@@ -17,6 +17,9 @@ export const Summary = () =>{
     
     if(!auth) return <LogIn />;
 
+    simplifiedDBApi("GET","testing")
+    .then((res: any) =>console.log("resting res ", res))
+
     
 
 return(

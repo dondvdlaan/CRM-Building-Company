@@ -12,6 +12,8 @@ import server.CRM.Building.Company.repository.CustomerRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -29,6 +31,13 @@ public class CustomerController {
     private AddressRepository addressRepository;
 
     // ------------- Routes -------------
+    // Testing
+    @GetMapping("/testing")
+    public List<Map<String,Object>> test1(){
+        return customerRepository.findProjectsByCust();
+    }
+    // End Testing
+
     // Show all customers
     @GetMapping("/allCustomers")
     public Iterable getAllCustomers(){

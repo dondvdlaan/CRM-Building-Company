@@ -18,6 +18,7 @@ export const AddProject = (): ReactElement =>{
     }
 
     const initCustomer = {
+        custID: "",
         custFirstName: "",
         custLastName: "",
         custTel: "",
@@ -34,12 +35,12 @@ return(
     projLand=""
     projSurface=""
     projStart={new Date().toString()}
+    projForecastOrderDate={new Date().toString()}
     projStatus=""
     projLostComment=""
     projNote=""
     projAddress={initAddress}
     projCustomer = {initCustomer}
-    custID=""
     isEdit={false}
     currentPage="Add Project"
 
