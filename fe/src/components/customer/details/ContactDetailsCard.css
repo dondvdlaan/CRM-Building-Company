@@ -1,0 +1,26 @@
+.kaart{
+    /* margin-top: 80;
+    border-radius: 25% 10%; 
+    transition: '0.3s';
+    width: '90%';
+    overflow: 'initial';
+    background: '#ffffff'; */
+
+  }
+  .header{
+  background: rgb(209, 229, 229);
+  text-align: center;
+  border-radius: 25%;
+  transition: 0.3s;
+  }
+.content {
+    padding-top: 0;
+    text-align: 'left';
+    overflow-x: 'auto';
+  }
+
+.content .table{
+    margin-bottom: 0
+  }
+
+

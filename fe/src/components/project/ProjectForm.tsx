@@ -58,7 +58,7 @@ export default function ProjectForm(props:Props) {
   const [projZipCode, setProjZipCode]     = useState(props.projAddress.addressZipCode);
   const [projCity, setProjCity]           = useState(props.projAddress.addressCity);
   const [projCountry, setProjCountry]     = useState(props.projAddress.addressCountry);
-  const [custID, setCustID]               = useState(props.projCustomer.custID);
+  const [custID, setCustID]               = useState(props.customer.custID);
   
   // Error states
   const [errorTitle, setErrorTitle]         = useState<boolean>(false);
@@ -79,8 +79,8 @@ export default function ProjectForm(props:Props) {
   // Check if user is logged in
   if(!auth) return <LogIn />;
 
-  const custFirstName = props.projCustomer.custFirstName;
-  const custLastName  = props.projCustomer.custLastName;
+  const custFirstName = props.customer.custFirstName;
+  const custLastName  = props.customer.custLastName;
   
   // Error messages
   const errMessageTitle     = "Please fill in Title and Description";

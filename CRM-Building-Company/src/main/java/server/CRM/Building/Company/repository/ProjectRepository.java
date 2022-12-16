@@ -1,5 +1,6 @@
 package server.CRM.Building.Company.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import server.CRM.Building.Company.model.Customer;
 import server.CRM.Building.Company.model.Project;
@@ -12,4 +13,7 @@ import java.util.List;
 public interface ProjectRepository extends CrudRepository<Project, Integer> {
 
     List<Project> findByOrderByProjForecastOrderDateAsc();
+
+
+    List<Project> findByCustomerOrderByProjForecastOrderDateAsc(Customer customer);
 }

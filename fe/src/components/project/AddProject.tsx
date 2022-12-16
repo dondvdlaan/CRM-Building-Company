@@ -40,7 +40,7 @@ return(
     projLostComment=""
     projNote=""
     projAddress={initAddress}
-    projCustomer = {initCustomer}
+    customer = {initCustomer}
     isEdit={false}
     currentPage="Add Project"
 

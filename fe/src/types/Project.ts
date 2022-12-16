@@ -21,7 +21,7 @@ export interface Project{
     }
 
 export interface ProjectWCustomer extends Project{
-    projCustomer:{
+    customer:{
         custID: string;
         custFirstName: string;
         custLastName: string;

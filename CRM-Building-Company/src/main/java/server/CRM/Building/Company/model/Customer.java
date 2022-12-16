@@ -20,14 +20,15 @@ public class Customer {
     private String custLastName;
     private String custEmail;
     private String custTel;
+
     // Cascade tells Hibernate to update table Address too
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "addressID")
     private Address custAddress;
     private LocalDate custRegistrationDate;
 
+    // Customer can have multiple projects
     @OneToMany
-    //@JoinColumn(name = "custID")
     private List<Project> custProjects;
 
 

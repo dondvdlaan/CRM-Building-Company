@@ -33,7 +33,7 @@ return(
     projStart={project.projStart}
     projNote={project.projNote}
     projAddress = {project.projAddress}
-    projCustomer = {project.projCustomer}
+    customer = {project.customer}
     isEdit={true}
     currentPage="Edit Project"
 />

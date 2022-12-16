@@ -131,13 +131,13 @@ return(
 
     <Grid item xs={4}>
         {/* Customer */}
-      <Link href={`/editCustomer/${project.projCustomer.custID}`}> 
+      <Link href={`/editCustomer/${project.customer.custID}`}> 
         <Paper elevation={5} sx={{mt:1}} >
           <Typography variant="h6" mb={2} ml={2}>Customer</Typography>
-          <Typography variant="body1" ml={2} >Name: {project.projCustomer.custFirstName} {project.projCustomer.custLastName}</Typography>
-          <Typography variant="body1" ml={2} >Tel: {project.projCustomer.custTel}</Typography>
-          <Typography variant="body1" ml={2} >Email: {project.projCustomer.custEmail}</Typography>
-          <Typography variant="body1" ml={2} >Customer since: {project.projCustomer.custRegistrationDate.slice(0,10)}</Typography>
+          <Typography variant="body1" ml={2} >Name: {project.customer.custFirstName} {project.customer.custLastName}</Typography>
+          <Typography variant="body1" ml={2} >Tel: {project.customer.custTel}</Typography>
+          <Typography variant="body1" ml={2} >Email: {project.customer.custEmail}</Typography>
+          <Typography variant="body1" ml={2} >Customer since: {project.customer.custRegistrationDate.slice(0,10)}</Typography>
         </Paper>
       </Link>   
 

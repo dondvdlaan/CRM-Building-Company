@@ -28,26 +28,28 @@ public class Project {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "addressID")
     private Address projAddress;
-    // A customer can be assigned to more projects. FK here at project
-    @ManyToOne()
-    @JoinColumn(name = "custID")
-    private Customer projCustomer;
+    // A customer assigned to this project with Foreign Key
+    @ManyToOne
+    @JoinColumn(name="custID")
+    private Customer customer;
 
     // region 1 Constructors
-    public Project(){
-        this.projTitle = DEF_VALUE_STR;
-        this.projDesc = DEF_VALUE_STR;
-        this.projType = DEF_VALUE_STR;
-        this.projLand = DEF_VALUE_STR;
-        this.projSurface = DEF_VALUE_STR;
-        this.projStart = DEF_VALUE_STR;
-        this.projNote = DEF_VALUE_STR;
+
+    public Project() {
+        this.projTitle = projTitle;
+        this.projDesc = projDesc;
+        this.projType = projType;
+        this.projLand = projLand;
+        this.projSurface = projSurface;
+        this.projStart = projStart;
+        this.projNote = projNote;
+        this.projStatus = projStatus;
         this.projForecastOrderDate = LocalDate.now();
-        this.projStatus = DEF_VALUE_STR;
-        this.projLostComment = DEF_VALUE_STR;
+        this.projLostComment = projLostComment;
         this.projAddress = new Address();
-        this.projCustomer = new Customer();
+        this.customer = new Customer();
     }
+
 
     // *** Getter und Setter ***
     public Integer getProjID() {
@@ -146,12 +148,12 @@ public class Project {
         this.projAddress = projAddress;
     }
 
-    public Customer getProjCustomer() {
-        return projCustomer;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setProjCustomer(Customer projCustomer) {
-        this.projCustomer = projCustomer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
@@ -169,7 +171,7 @@ public class Project {
                 ", projForecastOrderDate=" + projForecastOrderDate +
                 ", projLostComment='" + projLostComment + '\'' +
                 ", projAddress=" + projAddress +
-                ", projCustomer=" + projCustomer +
+                ", customer=" + customer +
                 '}';
     }
 }

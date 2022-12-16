@@ -1,11 +1,8 @@
 import ButtonAppBar from "../../uiElements/ButtonAppBar"
-import {dbApi, simplifiedDBApi, useDBApi, useStorageApi } from "../../shared/Api";
-import { useTheme,  
-        createTheme, 
-        ThemeProvider,
+import {simplifiedDBApi, useDBApi, useStorageApi } from "../../shared/Api";
+import { useTheme,
                              } from '@mui/material/styles';
 import {Table, 
-        
         TableBody,
         TableCell,
         TableContainer,
@@ -18,8 +15,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Typography } from "@mui/material";
-import { Customer, CustomerWORegDate } from "../../types/Customer";
-import { useNavigate } from "react-router-dom";
+import { Customer } from "../../types/Customer";
+import { useNavigate, Link } from "react-router-dom";
 import LogIn from "../login/LogIn";
 
 /**
@@ -83,6 +80,8 @@ return(
         <TableBody>
           {customers.map((customer:Customer) => (
             <TableRow
+              component={Link}
+              to={`/customerDetails/${customer.custID}`}
               key={customer.custID}
               // sx={{ '&:last-child td, &:last-child th': { border: 2 } }}
               sx={{'&:hover': { backgroundColor: 'grey' }}}

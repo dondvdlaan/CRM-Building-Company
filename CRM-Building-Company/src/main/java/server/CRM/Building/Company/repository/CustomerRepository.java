@@ -15,7 +15,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
     List<Customer> findBycustLastName(String name);
 
     @Query(
-            value = "Select p.proj_title, c.cust_first_name from project p, customer c where c.custid=3",
+            value = "Select p from project p, customer c where c.custid = custID",
             nativeQuery = true
     )
     List<Map<String, Object>> findProjectsByCust();

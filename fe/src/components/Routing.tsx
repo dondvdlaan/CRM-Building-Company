@@ -10,23 +10,25 @@ import { ProjectDetails } from "./project/ProjectDetails";
 import { AddProject } from "./project/AddProject";
 import { EditProject } from "./project/EditProject";
 import Test from "./testing/Test";
+import { CustomerDetails } from "./customer/details/CustomerDetails";
 
 export default function Routing(): ReactElement {
   return (
     <Routes>
-      <Route path="/summary"            element={<Summary />} />
-      <Route path="/allCustomers"       element={<ListCustomers />} />
-      <Route path="/addCustomer"        element={<AddCustomer />} />
-      <Route path="/editCustomer/:id"   element={<EditCustomer />} />
+      <Route path="/summary"              element={<Summary />} />
+      <Route path="/allCustomers"         element={<ListCustomers />} />
+      <Route path="/customerDetails/:custID"  element={<CustomerDetails />} />
+      <Route path="/addCustomer"          element={<AddCustomer />} />
+      <Route path="/editCustomer/:id"     element={<EditCustomer />} />
 
-      <Route path="/allProjects"        element={<ListProjects />} />
-      <Route path="/projectDetails/:id" element={<ProjectDetails />} />
-      <Route path="/addProject"         element={<AddProject />} />
-      <Route path="/editProject/:id"    element={<EditProject />} />
+      <Route path="/allProjects"          element={<ListProjects />} />
+      <Route path="/projectDetails/:id"   element={<ProjectDetails />} />
+      <Route path="/addProject"           element={<AddProject />} />
+      <Route path="/editProject/:id"      element={<EditProject />} />
 
-      <Route path="/allReferences"      element={<ListReferences />} />
+      <Route path="/allReferences"        element={<ListReferences />} />
       
-      <Route path="/test"               element={<Test />} />
+      <Route path="/test"                 element={<Test />} />
 
       <Route path="/" element={<Navigate to="/summary" />} />
 
