@@ -57,7 +57,9 @@ return(
     <ButtonAppBar currentPage="Customer Details" />
     <Box sx={{ flexGrow: 1 }}>
      
-     <Grid container spacing={2}>
+      <Grid container spacing={2}>
+        
+        {/* Left side of page */}
         <Grid item xs={1}>
           <Paper elevation={5} sx={{mt:1}}>
             <Button 
@@ -67,18 +69,23 @@ return(
             ></Button>
           </Paper>  
         </Grid>
+        
+        {/* Rightt side of page */}
         <Grid item xs={11}>
-          
-        <div style={{ height: "auto", width: '100%' }}>
-          <Grid container xs={12}>
-            <Grid item xs={6}>
-              <ContactDetailsCard customer={customer} />
+          <div style={{ height: "auto", width: '100%' }}>
+            <Grid container xs={12}>
+              
+              {/* Left side */}
+              <Grid item xs={6}>
+                <ContactDetailsCard customer={customer} />
+              </Grid>
+              
+              {/* Right side */}
+              <Grid item xs={6}>
+                <div>xs=6</div>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <div>xs=6</div>
-            </Grid>
-          </Grid>
-        </div>
+          </div>
 
           {/* Customer Projects */}
           <ProjectsTable path={`customer/${custID}/projects`} />

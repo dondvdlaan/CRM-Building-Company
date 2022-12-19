@@ -5,12 +5,13 @@ import {  AddCustomer } from "./customer/AddCustomer";
 import {  EditCustomer } from "./customer/EditCustomer";
 import { ListProjects } from "./project/ListProjects";
 import  {ListReferences}  from "./references/ListReferences";
-import { Summary } from "./Summary";
+import { Summary } from "./summary/Summary";
 import { ProjectDetails } from "./project/ProjectDetails";
 import { AddProject } from "./project/AddProject";
 import { EditProject } from "./project/EditProject";
-import Test from "./testing/Test";
+import Test from "./testing/Dashboard";
 import { CustomerDetails } from "./customer/details/CustomerDetails";
+import Dashboard from "./testing/Dashboard";
 
 export default function Routing(): ReactElement {
   return (
@@ -28,7 +29,7 @@ export default function Routing(): ReactElement {
 
       <Route path="/allReferences"        element={<ListReferences />} />
       
-      <Route path="/test"                 element={<Test />} />
+      <Route path="/dashboard"                 element={<Dashboard />} />
 
       <Route path="/" element={<Navigate to="/summary" />} />
 

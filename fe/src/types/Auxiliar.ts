@@ -6,3 +6,7 @@ export interface Address{
     addressCity: string,
     addressCountry: string
 }
+
+export interface SalesData{
+   salesData: [{revenue_date: string, revenue_amount?: number} ]
+}
