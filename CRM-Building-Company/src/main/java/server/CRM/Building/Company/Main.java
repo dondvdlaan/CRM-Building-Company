@@ -3,6 +3,7 @@ package server.CRM.Building.Company;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import server.CRM.Building.Company.model.Customer;
 import server.CRM.Building.Company.model.Project;
@@ -10,10 +11,12 @@ import server.CRM.Building.Company.model.User;
 import server.CRM.Building.Company.repository.CustomerRepository;
 import server.CRM.Building.Company.repository.ProjectRepository;
 import server.CRM.Building.Company.repository.UserRepository;
+import server.CRM.Building.Company.security.RsaKeyProperties;
 
 import java.util.Optional;
 
 @SpringBootApplication
+@EnableConfigurationProperties(RsaKeyProperties.class)
 public class Main {
 
 	public static void main(String[] args) {

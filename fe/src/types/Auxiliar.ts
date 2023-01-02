@@ -8,5 +8,6 @@ export interface Address{
 }
 
 export interface SalesData{
-   salesData: [{revenue_date: string, revenue_amount?: number} ]
+    revenue_date: string, 
+    revenue_amount: number 
 }

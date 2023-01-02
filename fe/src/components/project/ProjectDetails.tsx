@@ -16,7 +16,7 @@ export const ProjectDetails = () =>{
 // *********** Constants and variables ***********
 const auth      = useStorageApi("userToken");
 const params    = useParams();
-const [project] = useDBApi<ProjectWCustomer>("GET",`project/${params.id}`);
+const [project] = useDBApi<ProjectWCustomer>("GET",`project/${params.id}`, auth);
 const navigate  = useNavigate();
 
 // Wait till project arrived
@@ -29,7 +29,7 @@ if(!auth) return <LogIn />;
 // *********** Event Listeners ***********
 const onDelete = () =>{
 
-simplifiedDBApi("DELETE",`project/${params.id}`)
+simplifiedDBApi("DELETE",`project/${params.id}`, auth)
 .then((res: any) =>console.log("res", res))
 .then(()=>navigate("/allProjects"))
 }

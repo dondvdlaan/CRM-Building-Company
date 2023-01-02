@@ -1,40 +1,48 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import axios, { AxiosResponse, Method } from "axios";
 
-// Constants
+// *** Constants and variables ***
 const BASE_URL = 'http://127.0.0.1:8080/';
 // local utility type
 type SetState<T> = Dispatch<SetStateAction<T>>;
 
 
-export function useDBApi<T>(method:Method, path: string ): [T | undefined, SetState<T | undefined>] {
+
+export function useDBApi<T>(method:Method, path: string, jwt: string ): [T | undefined, SetState<T | undefined>] {
   
+  console.log("useDBApi jwt: ", jwt)
+
   // Constants
   const [rows, setRows] = useState<T>();
 
   useEffect(() => {
 
-    dbApi(method, path, setRows); 
+    // JWT token is a condition to continue, wait till JWT arrived
+    if(!jwt) return;
 
-  },[path]);
+    dbApi(method, path, jwt, setRows); 
+
+  },[path, jwt]);
 
   return [rows, setRows];
 }
 
 export function dbApi<T>  
 (method: Method, 
-  path:string, 
+  path:string,
+  jwt: string, 
   callback:(data: any) => void = () => {},
   data = {}
   ){
 
-  // Constants
+  // *** Constants and variables ***
   const config = {
     method,
     url: `${BASE_URL}${path}`,
+    headers: {Authorization: `Bearer ${jwt}`},
     data}
 
-    console.log("config: ",config)
+    console.log("dbApi config: ",config)
 
   axios(config)
   .then((response: AxiosResponse<any>) =>{
@@ -48,12 +56,14 @@ export function dbApi<T>
 
 }
 export const simplifiedDBApi =  
-(method: Method, path:string, data = {}):any =>{
+(method: Method, path:string, jwt: string, data = {}):any =>{
 
-  // Constants
+   // *** Constants and variables ***
+
   const config = {
     method,
     url: `${BASE_URL}${path}`,
+    headers: {Authorization: `Bearer ${jwt}`},
     data}
 
     console.log("APIconfig: ",config)
@@ -61,9 +71,34 @@ export const simplifiedDBApi =
   return axios(config)
 }
 
+export const getTokenApi =  
+( method: Method, 
+  path: string, 
+  userpassword: string,
+  data = {}):any =>{
+
+
+  // Constants
+  
+  const config = {
+    method,
+    url: `${BASE_URL}${path}`,
+    headers: { 
+      'Content-Type': 'application/json',
+      Authorization: `Basic ${userpassword}`,
+    },
+    // data: {"username":"dvdlaan","password":"password"}
+    data
+  }
+  
+    console.log("APIconfig: ", config)
+
+  return axios(config)
+}
+
 type A = (null | string);
 
-export function useStorageApi(userToken: string){
+export function useStorageApi(userToken: string): any{
 
   const [auth, setAuth] = useState<A>(null);
 
@@ -71,6 +106,8 @@ export function useStorageApi(userToken: string){
 
     let token = localStorage.getItem(userToken);
 
+    console.log("useStorageApi token: ", token)
+    
     if (token) setAuth(token);
     
   },[userToken]);

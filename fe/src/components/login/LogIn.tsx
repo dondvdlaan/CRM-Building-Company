@@ -10,8 +10,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright';
-import { simplifiedDBApi } from '../../shared/Api';
+import { getTokenApi, simplifiedDBApi } from '../../shared/Api';
 import { useNavigate } from 'react-router-dom';
+import { Buffer } from 'buffer';
 
 const theme = createTheme();
 
@@ -30,19 +31,24 @@ export default function LogIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     
-    const userData = {
-      userEmail: data.get('email'),
-      userPW: data.get('password'),
-    }
-    console.log(userData);
+    const username = data.get('username');
+    const password = data.get('password');
+  
+    
+    console.log("username: ", username);
+    console.log("password: ", password);
 
-    simplifiedDBApi("POST", "user/logIn", userData )
+    const buf     = Buffer.from(`${username}:${password}`, 'utf8');
+    // let basicAuth = `${username}:${password}`;
+    let userpassword = buf.toString('base64');
+
+    getTokenApi("POST", "user/token", userpassword )
     .then((res: any)=>{
       
       console.log("res: ", res.data)
 
       if(res.data){
-        localStorage.setItem("userToken", "OK")
+        localStorage.setItem("userToken", res.data)
         navigate("/");
       } 
       else{
@@ -75,10 +81,10 @@ export default function LogIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="User name"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField

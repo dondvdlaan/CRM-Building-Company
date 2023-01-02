@@ -45,6 +45,7 @@ public class CustomerController {
         System.out.println("allCustomers");
         return customerRepository.findAll();
     }
+
     // Get customer
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable Integer id) throws Exception{
@@ -60,6 +61,7 @@ public class CustomerController {
 
         return customer;
     }
+
     // Delete customer
     @DeleteMapping("/customer/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Integer id){
@@ -70,6 +72,7 @@ public class CustomerController {
         log.info("Logging " + ResponseEntity.noContent().build());
         return ResponseEntity.noContent().build();
     }
+
     // Update customer
     @PutMapping("/customer/{id}")
     public void updateCustomer(@RequestBody Customer updateCustomer, @PathVariable Integer id){
@@ -90,6 +93,7 @@ public class CustomerController {
                 });
 
     }
+
     // Add Customer
     @PostMapping("/customer")
     public Customer addCustomer(@RequestBody Customer customer){

@@ -25,10 +25,10 @@ import LogIn from "../login/LogIn";
 export const ListCustomers = () =>{
 
 // **************** Constants and variables ****************
-const [customers ]   = useDBApi<Customer[]>('GET','allCustomers')
+const auth           = useStorageApi("userToken");
+const [customers ]   = useDBApi<Customer[]>('GET','allCustomers', auth)
 const theme          = useTheme();
 const navigate       = useNavigate();
-const auth           = useStorageApi("userToken");
 
 // Wait till customers are there
 if(!customers) return(<p>Loading customers..</p>);
@@ -50,7 +50,7 @@ const onEdit = (e: React.FormEvent,row:Customer)=>{
 const onDel = (e: React.FormEvent,row:Customer)=>{
   e.preventDefault();
 
-  simplifiedDBApi("DELETE",`customer/${row.custID}`,{})
+  simplifiedDBApi("DELETE",`customer/${row.custID}`,auth ,{})
   // Callback to refresh page after API
   .then(() => window.location.reload()) 
   .catch((error: any) => {

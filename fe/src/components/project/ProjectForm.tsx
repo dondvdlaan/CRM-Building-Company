@@ -36,11 +36,11 @@ interface Props extends ProjectWCustomer{
 export default function ProjectForm(props:Props) {
   
   // **************** Constants and variables **************** 
-  // Retrieve customers from DB for pop-up menu window
-  const [customers]   = useDBApi<Customer[]>("GET","allCustomers")
-  
   // Get user token to check log in
   const auth          = useStorageApi("userToken");
+  // Retrieve customers from DB for pop-up menu window
+  const [customers]   = useDBApi<Customer[]>("GET","allCustomers", auth)
+  
   
   // Form Input fields
   const [projTitle, setProjTitle]         = useState(props.projTitle);
@@ -185,7 +185,7 @@ const onHandleProject = (e: React.FormEvent) => {
     ["PUT", `customer/${custID}/project`]:
     ["POST", `customer/${custID}/project`];
   
-     simplifiedDBApi(method, path, project())
+     simplifiedDBApi(method, path, auth, project())
     // Callback
     .then(()=>navigate("/allProjects"))
     .catch((error: any) => {

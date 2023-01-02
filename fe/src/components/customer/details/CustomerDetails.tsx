@@ -16,11 +16,11 @@ import { ContactDetailsCard } from "./ContactDetailsCard";
 export const CustomerDetails = () =>{
 
 // **************** Constants and variables ****************
+const auth       = useStorageApi("userToken");
 const {custID}   = useParams<{custID: string | undefined}>()
-const [customer] = useDBApi<Customer>('GET',`customer/${custID}`)
+const [customer] = useDBApi<Customer>('GET',`customer/${custID}`, auth)
 const theme      = useTheme();
 const navigate   = useNavigate();
-const auth       = useStorageApi("userToken");
 
 // Wait till customers are there
 if(!customer) return(<p>Loading customer..</p>);
@@ -42,7 +42,7 @@ const onEdit = (e: React.FormEvent)=>{
 const onDel = (e: React.FormEvent,row:Customer)=>{
   e.preventDefault();
 
-  simplifiedDBApi("DELETE",`customer/${row.custID}`,{})
+  simplifiedDBApi("DELETE",`customer/${row.custID}`, auth, {})
   // Callback to refresh page after API
   .then(() => window.location.reload()) 
   .catch((error: any) => {
@@ -70,7 +70,7 @@ return(
           </Paper>  
         </Grid>
         
-        {/* Rightt side of page */}
+        {/* Right side of page */}
         <Grid item xs={11}>
           <div style={{ height: "auto", width: '100%' }}>
             <Grid container xs={12}>
@@ -88,7 +88,7 @@ return(
           </div>
 
           {/* Customer Projects */}
-          <ProjectsTable path={`customer/${custID}/projects`} />
+          <ProjectsTable path={`customer/${custID}/projects`} auth={auth} />
         </Grid>
       </Grid>
     </Box>

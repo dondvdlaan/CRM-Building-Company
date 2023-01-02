@@ -22,7 +22,7 @@ return(
     {/* Navigation Bar */}
     <ButtonAppBar currentPage="Projects" />
 
-    <ProjectsTable path={"allProjects"} />;
+    <ProjectsTable path={"allProjects"} auth={auth} />;
 </>
 
 )

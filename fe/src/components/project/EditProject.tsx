@@ -2,7 +2,8 @@ import { ReactElement } from "react"
 import { useParams } from "react-router-dom";
 import ProjectForm from "./ProjectForm"
 import { Project, ProjectWCustomer } from '../../types/Project';
-import { useDBApi } from "../../shared/Api";
+import { useDBApi, useStorageApi } from "../../shared/Api";
+import LogIn from "../login/LogIn";
 
 
 /**
@@ -11,11 +12,15 @@ import { useDBApi } from "../../shared/Api";
 export const EditProject = (): ReactElement =>{
 
 // Constants and variabels
-const params = useParams();
-const [project] = useDBApi<ProjectWCustomer>("GET",`project/${params.id}`)
+const auth      = useStorageApi("userToken");
+const params    = useParams();
+const [project] = useDBApi<ProjectWCustomer>("GET",`project/${params.id}`, auth)
 
 // Wait till project arrives
 if(!project) return(<p>Loading Project..</p>);
+
+// Check if user is logged in
+if(!auth) return <LogIn />;
 
 console.log("EditProject", project)
 

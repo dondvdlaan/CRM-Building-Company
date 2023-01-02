@@ -16,7 +16,7 @@ export const Summary = () =>{
     const auth = useStorageApi("userToken");
 
 
-    console.log("auth: ", auth);
+    console.log("Summary auth: ", auth);
     
     if(!auth) return <LogIn />;
 
@@ -49,7 +49,7 @@ return(
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               
-              {/* Chart */}
+              {/* Chart 1 */}
               <Grid item xs={12} md={6} lg={6}>
                 <Paper
                   sx={{
@@ -59,7 +59,21 @@ return(
                     height: 240,
                   }}
                 >
-                  <Chart />
+                  <Chart accumulatedSales={false} title="Monthly sales" auth={auth} />
+                </Paper>
+              </Grid>
+
+              {/* Chart 2 */}
+              <Grid item xs={12} md={6} lg={6}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 240,
+                  }}
+                >
+                  <Chart accumulatedSales={true} title="Year to end sales" auth={auth}  />
                 </Paper>
               </Grid>
             </Grid>

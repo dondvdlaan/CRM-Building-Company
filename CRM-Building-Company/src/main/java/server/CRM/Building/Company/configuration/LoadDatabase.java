@@ -33,7 +33,7 @@ class LoadDatabase {
             user1.setUserPW("b3fbcdbc8517f4d08017f2752145ce52a216bd6d1ea197a2483139fe42eb30a15cf387404b227cb622f3d5968b4dd90c96e297c72fd97a7f8cc093d8915706ef");
 
             log.info("Preloading " + repositoryUSR.save(user1));
-             */
+
             Revenues jan2022 = new Revenues(100,
                     LocalDate.of(2022, 1, 15),1);
             Revenues feb2022 = new Revenues(200,
@@ -68,7 +68,7 @@ class LoadDatabase {
             revenueRepository.save(sep2022);
             revenueRepository.save(oct2022);
             revenueRepository.save(nov2022);
-
+*/
         };
     }
 }

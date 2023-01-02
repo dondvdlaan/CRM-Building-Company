@@ -20,10 +20,11 @@ const columns: GridColDef[] = [
 /**
  * Component to list all projects
  */
-export const ProjectsTable = (props:{path: string}) =>{
+export const ProjectsTable = (props:{path: string
+                                     auth: string }) =>{
 
 // **************** Constants and variables ****************
-const [projects ]       = useDBApi<ProjectWCustomer[]>('GET',props.path)
+const [projects ]       = useDBApi<ProjectWCustomer[]>('GET',props.path, props.auth)
 const navigate          = useNavigate();
 const auth              = useStorageApi("userToken");
 // 90 days is 3 months

@@ -1,7 +1,8 @@
 import { ReactElement } from "react"
 import { useParams } from "react-router-dom";
-import { dbApi, useDBApi } from "../../shared/Api";
+import { dbApi, useDBApi, useStorageApi } from "../../shared/Api";
 import { Customer, CustomerWORegDate } from "../../types/Customer";
+import LogIn from "../login/LogIn";
 import CustomerForm from "./CustomerForm"
 
 
@@ -11,11 +12,15 @@ import CustomerForm from "./CustomerForm"
 export const EditCustomer = (): ReactElement =>{
 
 // Constants and variables
-const params = useParams<{ id: string }>();
-const [customer] = useDBApi<Customer>("GET",`customer/${params.id}`)
+const auth          = useStorageApi("userToken");
+const params        = useParams<{ id: string }>();
+const [customer]    = useDBApi<Customer>("GET",`customer/${params.id}`, auth)
 
 // Wiaz till customer arruves
 if(customer === undefined || customer=== null) return(<p>Lade..</p>);
+
+// Check if user is logged in
+if(!auth) return <LogIn />;
 
 return(
 <CustomerForm

@@ -125,7 +125,7 @@ const checkFormInputs = (): boolean =>{
       ["PUT", `customer/${props.custID}`]:
       ["POST", "customer"];
   
-      simplifiedDBApi(method, path, customer())
+      simplifiedDBApi(method, path, auth, customer())
       // Callback
       .then(()=>navigate("/allCustomers"))
       .catch((error: any) => {

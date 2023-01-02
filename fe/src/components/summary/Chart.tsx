@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 // Generate Sales Data
 function createData(revenue_date: string, amount?: number) {
+
   return { revenue_date, amount };
 }
 
@@ -37,12 +38,14 @@ console.log("Chart darta: ", data);
 /**
  * Component Chart
  */
-export default function Chart() {
+export default function Chart(props:{accumulatedSales: Boolean,
+                                     title: string,
+                                     auth: string    }) {
 
   // *** Constants nd varoables ***
   const theme = useTheme();
-  const [monthsBack, setMonthsBack] = useState("3");
-  const [salesData, setSalesData] = useDBApi<any>("GET", `revenue/${monthsBack}`);
+  const [monthsBack, setMonthsBack] = useState("12");
+  const [salesData, setSalesData] = useDBApi<SalesData[]>("GET", `revenue/${monthsBack}`, props.auth);
 
   const months =[1,2,3,4,5,6,7,8,9,10,11,12];
 
@@ -50,12 +53,28 @@ export default function Chart() {
 
   console.log("salesData ", salesData);
 
+  // Create accumulated sales data out of monthly sales
+  let accumulatedSalesData = [];
+  let accumulator = 0;
+  let revenue_date = "";
+  
+  if(props.accumulatedSales){
+   
+    for (const sd of salesData) {
+      accumulator += sd.revenue_amount;
+      revenue_date = sd.revenue_date
+      accumulatedSalesData.push({accumulator, revenue_date})
+    }
+    console.log("accumulatedSalesData: ", accumulatedSalesData)
+
+  }
+
   return (
     <React.Fragment>
-      <Title>Monthly sales</Title>
+      <Title>{props.title}</Title>
       <ResponsiveContainer>
         <LineChart
-          data={salesData}
+          data={props.accumulatedSales ? accumulatedSalesData : salesData}
           margin={{
             top: 16,
             right: 16,
@@ -87,7 +106,7 @@ export default function Chart() {
           <Line
             isAnimationActive={false}
             type="monotone"
-            dataKey="revenue_amount"
+            dataKey={props.accumulatedSales ? "accumulator" : "revenue_amount"}
             stroke={theme.palette.primary.main}
             dot={false}
           />
