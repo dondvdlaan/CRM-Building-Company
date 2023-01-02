@@ -1,7 +1,6 @@
 package server.CRM.Building.Company.security;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import server.CRM.Building.Company.model.User;
 
@@ -9,13 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class MyUserPrincipal implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
     private final User user;
 
-    public MyUserPrincipal(User user) {
+    public CustomUserDetails(User user) {
         this.user = user;
     }
 
