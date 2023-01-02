@@ -4,6 +4,11 @@ node_modules
 #Notes
 Notes.*
 
+#Cerificates private key
+certs
+*.pem
+*.pem.*
+
 #SQL
 sqlDB
 *.sql

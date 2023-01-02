@@ -53,8 +53,11 @@ public class UserController {
 
         System.out.println("Route: checkUserLogin");
 
+
         // *** Constants and variables ***
         boolean verifyLogIn = false;
+        /*
+
         Optional<User> currentUser = Optional.ofNullable(userRepository.findByuserEmail(user.getUserEmail()));
         System.out.println("User: "+ currentUser.toString());
 
@@ -62,7 +65,7 @@ public class UserController {
             verifyLogIn = Helper.verifyPassword(user.getUserPW(),currentUser.get().getUserPW());
         }
         else System.out.println("Email not found");
-
+        */
         return verifyLogIn;
     }
 

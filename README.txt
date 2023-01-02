@@ -6,12 +6,13 @@ staff. Focus is on the projects section, while a project goes through a funnel m
 discovery, to offering, closed won/lost, contract and execution.
 
 Summary:
-- Back-end  : JAVA/Spring
+- Back-end  : JAVA/Spring/Security/jpa
 - Database  : MySQL
 - Front-end : REACT
 - CSS       : Material UI
 
 You can log in with:
-email - admin@admin.com
-pw - 1234
+user name: username
+password : password
+
  

@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import server.CRM.Building.Company.model.Address;
 import server.CRM.Building.Company.model.Customer;
 import server.CRM.Building.Company.model.Revenues;
 import server.CRM.Building.Company.model.User;
 import server.CRM.Building.Company.repository.RevenueRepository;
 import server.CRM.Building.Company.repository.UserRepository;
+import server.CRM.Building.Company.security.SecurityConfiguration;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,10 +29,12 @@ class LoadDatabase {
         return args -> {
             /**
             User user1 = new User();
-            user1.setUserFirstName("Patito");
-            user1.setUserLastName("Duck");
+            user1.setUsername("Patito Duck");
             user1.setUserEmail("admin@admin.com");
-            user1.setUserPW("b3fbcdbc8517f4d08017f2752145ce52a216bd6d1ea197a2483139fe42eb30a15cf387404b227cb622f3d5968b4dd90c96e297c72fd97a7f8cc093d8915706ef");
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String password = "password";
+            String encodedPassword = passwordEncoder.encode(password);
+            user1.setPassword(encodedPassword);
 
             log.info("Preloading " + repositoryUSR.save(user1));
 

@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,12 +24,16 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import server.CRM.Building.Company.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final RsaKeyProperties rsaKeys;
 
@@ -37,9 +42,12 @@ public class SecurityConfiguration {
     }
 
     // Testing
+    /*
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     String password = "password";
     String encodedPassword = passwordEncoder.encode(password);
+
+     */
     // end testing
 
     @Bean
@@ -77,17 +85,22 @@ public class SecurityConfiguration {
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withUsername("dvdlaan")
-                        // Testing encoded pw
-                        .password(encodedPassword)
-                        .roles("USER")
-                        .build();
 
-        return new InMemoryUserDetailsManager(user);
-    }
+    // Testing
+    /*
+       @Bean
+       public UserDetailsService userDetailsService() {
+           UserDetails user =
+                   User.withUsername("Patito Duck")
+                           // Testing encoded pw
+                           .password(encodedPassword)
+                           .roles("USER")
+                           .build();
+
+           return new InMemoryUserDetailsManager(user);
+       }
+       */
+    // end testing
 
     @Bean
     public PasswordEncoder passwordEncoder() {
