@@ -6,10 +6,11 @@ staff. Focus is on the projects section, while a project goes through a funnel m
 discovery, to offering, closed won/lost, contract and execution.
 
 Summary:
-- Back-end  : JAVA/Spring/Security/jpa
+- Back-end  : JAVA 17/Spring/Security/jpa
 - Database  : MySQL
 - Front-end : REACT
 - CSS       : Material UI
+- Testing   : JUNIT, Spring @MockBean, MockMvc and Mokito
 
 You can log in with:
 user name: username

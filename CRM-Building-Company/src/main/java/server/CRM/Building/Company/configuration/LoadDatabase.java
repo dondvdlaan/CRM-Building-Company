@@ -27,6 +27,9 @@ class LoadDatabase {
     CommandLineRunner initDatabase(UserRepository repositoryUSR, RevenueRepository revenueRepository) {
 
         return args -> {
+            //Address newAddress = new Address();
+            //System.out.println(newAddress);
+
             /**
             User user1 = new User();
             user1.setUsername("Patito Duck");

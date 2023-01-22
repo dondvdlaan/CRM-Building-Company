@@ -42,6 +42,13 @@ public class Address {
         this.addressCountry = addressCountry;
     }
 
+    // For testing
+    public Address(String addressStreet, String addressHouseNumber) {
+        this.addressStreet = addressStreet;
+        this.addressHouseNumber = addressHouseNumber;
+    }
+    // End testing
+
     // *** Getter und Setter ***
 
     public Integer getAddressID() {
@@ -94,13 +101,16 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" +
-                "addressID=" + addressID +
+
+        Class currentClass = getClass();
+
+        return currentClass.getSimpleName()+ "{" +
+                " addressID=" + addressID +
                 ", addressStreet='" + addressStreet + '\'' +
                 ", addressHouseNumber='" + addressHouseNumber + '\'' +
                 ", addressZipCode='" + addressZipCode + '\'' +
                 ", addressCity='" + addressCity + '\'' +
                 ", addressCountry='" + addressCountry + '\'' +
-                '}';
+                '}' ;
     }
 }

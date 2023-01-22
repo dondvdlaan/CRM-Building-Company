@@ -1,6 +1,7 @@
 package server.CRM.Building.Company.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import server.CRM.Building.Company.model.Customer;
 import server.CRM.Building.Company.model.User;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called UserRepository
 // CRUD refers Create, Read, Update, Delete
 
+@Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findByuserEmail(String userEmail);

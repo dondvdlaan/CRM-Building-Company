@@ -33,8 +33,19 @@ public class CustomerController {
     // ------------- Routes -------------
     // Testing
     @GetMapping("/testing")
-    public List<Map<String,Object>> test1(){
-        return customerRepository.findProjectsByCust();
+    public String test1(){
+    //public List<Map<String,Object>> test1(){
+
+        return "Nu dan";
+        //return customerRepository.findProjectsByCust();
+    }
+    @GetMapping("/testing2")
+    public String test2(){
+
+
+        System.out.println("testing2");
+
+        return "A ver q pasaaaaaa!";
     }
     // End Testing
 

@@ -57,15 +57,16 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeRequests()
                 // Token request is allowed
-                .antMatchers("/user/token").permitAll()
+                //.antMatchers("/user/token").permitAll()
                 // Testing
-                .antMatchers("/user/hello").permitAll()
+                .anyRequest().permitAll()
+                //.antMatchers("/testing2").permitAll()
                 // end testing
                 //.requestMatcher(new AntPathRequestMatcher("/user/token"))
                 // Temporarily no authentication checks are conducted
                 //.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 //.antMatchers("/**").anonymous()
-                .anyRequest().authenticated()
+                //.anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -43,6 +43,12 @@ public class Customer {
         this.custRegistrationDate = LocalDate.now();
         this.custProjects = new ArrayList<>();
     }
+    // For the sake of Automatic testing
+    public Customer(String custFirstName, String custLastName) {
+        this.custFirstName = custFirstName;
+        this.custLastName = custLastName;
+    }
+
     // *** Getter und Setter ***
 
     public Integer getCustID() {
